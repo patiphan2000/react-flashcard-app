@@ -3,7 +3,7 @@ import {
   BrowserRouter as Router,
   Route,
   Link,
-  Routes
+  Routes,
 } from "react-router-dom";
 import auth from './firebase'
 
@@ -16,11 +16,15 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 import MenuIcon from '@mui/icons-material/Menu';
+import AccountCircle from '@mui/icons-material/AccountCircle';
 
 
 function App (){
 
+  const [anchorEl, setAnchorEl] = useState(null);
   const [authState, setAuthState] = useState({
     email: '',
     password: '',
@@ -28,6 +32,8 @@ function App (){
     message: '',
     showPassword: false,
   });
+
+  const isMenuOpen = Boolean(anchorEl);
 
   const user = authState.currentUser;
 
@@ -39,6 +45,35 @@ function App (){
       })
     })
   }
+
+  const handleProfileMenuOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+  const menuId = 'primary-search-account-menu';
+  const renderMenu = (
+    <Menu
+      anchorEl={anchorEl}
+      anchorOrigin={{
+        vertical: 'top',
+        horizontal: 'right',
+      }}
+      id={menuId}
+      keepMounted
+      transformOrigin={{
+        vertical: 'top',
+        horizontal: 'right',
+      }}
+      open={isMenuOpen}
+      onClose={handleMenuClose}
+    >
+      <MenuItem onClick={logout}>Logout</MenuItem>
+    </Menu>
+  );
 
   return (
     <div className="App">
@@ -56,17 +91,31 @@ function App (){
               >
                 <MenuIcon />
               </IconButton>
-              <Typography variant="h6" component="div" sx={{ flexGrow: 2 }}>
+              <Typography 
+              variant="h6" 
+              component="div" 
+              sx={{ flexGrow: 2 }}>
                 FlashCard
               </Typography>
               {
                 user != null?
-                <Button color="inherit" onClick={logout}>Logout</Button>
+                <IconButton
+                  size="large"
+                  edge="end"
+                  aria-label="account of current user"
+                  aria-controls={menuId}
+                  aria-haspopup="true"
+                  onClick={handleProfileMenuOpen}
+                  color="inherit"
+                >
+                  <AccountCircle />
+                </IconButton>
                 :
                 <Button component={Link} to="/login" color="inherit">Login</Button>
               }
             </Toolbar>
           </AppBar>
+          {renderMenu}
         </Box>
         
         <Routes>

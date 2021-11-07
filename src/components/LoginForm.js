@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import auth from '../firebase'
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate, Route } from "react-router-dom";
 
 import Box from '@mui/material/Box';
 import Stack  from '@mui/material/Stack';
@@ -71,68 +71,65 @@ function LoginForm ({authState, setAuthState}) {
 
   const { message, currentUser } = authState
 
-  if (currentUser) {
-    return (
-      <div>
-        <p>Hello {currentUser.email}</p>
-        <button onClick={logout}>Logout</button>
-      </div>
-    )
-  }
-
   return (
-    <section className="section container">
-      <p>{authState.email}</p>
-      <Box
-        component="form"
-        sx={{
-          flexDirection: 'column',
-          '& .MuiAlert-root': { m: 1, width: '25ch' },
-          '& .MuiButton-root': { m: 1, width: '10ch' },
-        }}
-        noValidate
-        autoComplete="off"
-      >
-        <Stack>
-        <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
-          <InputLabel htmlFor="outlined-adornment-password">Email</InputLabel>
-          <OutlinedInput
-            id="email"
-            type='email'
-            onChange={onChangeHandler}
-            name='email'
-            label="Email"
-          />
-        </FormControl>
+    <div>
+    { currentUser != null?
+      <Navigate to="/" />
+      :
+      <section className="section container">
+        <p>{authState.email}</p>
+        <Box
+          component="form"
+          sx={{
+            flexDirection: 'column',
+            '& .MuiAlert-root': { m: 1, width: '25ch' },
+            '& .MuiButton-root': { m: 1, width: '10ch' },
+          }}
+          noValidate
+          autoComplete="off"
+        >
+          <Stack>
+          <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
+            <InputLabel htmlFor="outlined-adornment-password">Email</InputLabel>
+            <OutlinedInput
+              id="email"
+              type='email'
+              onChange={onChangeHandler}
+              name='email'
+              label="Email"
+            />
+          </FormControl>
 
-        <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
-          <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
-          <OutlinedInput
-            id="password"
-            type={showPassword ? 'text' : 'password'}
-            onChange={onChangeHandler}
-            name='password'
-            endAdornment={
-              <InputAdornment position="end">
-                <IconButton
-                  onClick={handleClickShowPassword}
-                  onMouseDown={handleMouseDownPassword}
-                  edge="end"
-                >
-                  {authState.showPassword? <VisibilityOffIcon/> : <VisibilityIcon/>}
-                </IconButton>
-              </InputAdornment>
-            }
-            label="Password"
-          />
-        </FormControl>
-        {message ? <Alert severity="warning">{message}</Alert> : null}
-        <Button variant="contained" onClick={onSubmitHandler}>
-          Submit
-        </Button>
-        </Stack>
-      </Box>
-    </section>
+          <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
+            <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+            <OutlinedInput
+              id="password"
+              type={showPassword ? 'text' : 'password'}
+              onChange={onChangeHandler}
+              name='password'
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    onClick={handleClickShowPassword}
+                    onMouseDown={handleMouseDownPassword}
+                    edge="end"
+                  >
+                    {showPassword? <VisibilityOffIcon/> : <VisibilityIcon/>}
+                  </IconButton>
+                </InputAdornment>
+              }
+              label="Password"
+            />
+          </FormControl>
+          {message ? <Alert severity="warning">{message}</Alert> : null}
+          <Button variant="contained" onClick={onSubmitHandler}>
+            Submit
+          </Button>
+          </Stack>
+        </Box>
+      </section>
+    }
+    </div>
   )
 }
 
