@@ -11,6 +11,9 @@ import LoginForm from './components/LoginForm'
 import './App.css'
 
 import AppBar from '@mui/material/AppBar';
+import Container from '@mui/material/Container';
+import Grid from '@mui/material/Grid';
+
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
@@ -118,12 +121,22 @@ function App (){
           {renderMenu}
         </Box>
         
-        <Routes>
-          <Route exact path="/" element={ <p>main page</p> }/>
-          <Route exact path="/login" element={
-              <LoginForm authState={authState} setAuthState={setAuthState}/>
-          } />
-        </Routes>
+        <Container maxWidth="sm">
+          <Grid
+            container
+            spacing={0}
+            direction="column"
+            alignItems="center"
+            style={{ minHeight: '100vh' }}
+          >
+            <Routes>
+              <Route exact path="/" element={ <p>main page</p> }/>
+              <Route exact path="/login" element={
+                  <LoginForm authState={authState} setAuthState={setAuthState}/>
+              } />
+            </Routes>
+          </Grid> 
+        </Container>
       </Router>
     </div>
   )
