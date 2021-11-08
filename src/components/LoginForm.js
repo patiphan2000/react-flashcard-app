@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useState } from 'react'
 import auth from '../firebase'
+import { Navigate, useNavigate } from "react-router-dom";
 
 import Box from '@mui/material/Box';
 import Stack  from '@mui/material/Stack';
@@ -15,90 +16,68 @@ import Alert from '@mui/material/Alert';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
-class LoginForm extends React.Component {
-  constructor(props) {
-    super(props)
+function LoginForm ({authState, setAuthState}) {
+  
+  const navigate = useNavigate();
 
-    this.state = {
-      email: '',
-      password: '',
-      currentUser: null,
-      message: '',
-      showPassword: false,
-    }
-  }
+  const [showPassword, setShowPassword] = useState(false);
 
-  onChange = (e) => {
+  const onChangeHandler = (e) => {
     const { name, value } = e.target
-
-    this.setState({
-      [name]: value
-    })
+    // console.log(name, value);
+    var authData = authState
+    console.log(authData);
+    authData[name] = value
+    setAuthState(authData)
   }
 
-  onSubmit = (e) => {
+  const onSubmitHandler = (e) => {
     e.preventDefault()
 
-    const { email, password } = this.state
+    const email = authState.email
+    const password = authState.password
     
     auth
       .signInWithEmailAndPassword(email, password)
       .then(response => {
-        this.setState({
+        setAuthState({
           currentUser: response.user
         })
+        navigate(-1)
       })
       .catch(error => {
-        this.setState({
+        setAuthState({
           message: error.message
         })
       })
   }
 
-  componentDidMount() {
-    auth.onAuthStateChanged(user => {
-      if (user) {
-        this.setState({
-          currentUser: user
-        })
-      }
-    })
-  }
-
-  logout = (e) => {
+  const logout = (e) => {
     e.preventDefault()
     auth.signOut().then(response => {
-      this.setState({
+      setAuthState({
         currentUser: null
       })
     })
   }
 
-  handleClickShowPassword = () => {
-    this.setState({
-      showPassword: !this.state.showPassword,
-    });
+  const handleClickShowPassword = () => {
+    setShowPassword(!showPassword);
   }
 
-  handleMouseDownPassword = (e) => {
+  const handleMouseDownPassword = (e) => {
     e.preventDefault();
   }
 
-  render() {
+  const { message, currentUser } = authState
 
-    const { message, currentUser } = this.state
-
-    if (currentUser) {
-      return (
-        <div>
-          <p>Hello {currentUser.email}</p>
-          <button onClick={this.logout}>Logout</button>
-        </div>
-      )
-    }
-
-    return (
+  return (
+    <div>
+    { currentUser != null?
+      <Navigate to="/" />
+      :
       <section className="section container">
+        <p>{authState.email}</p>
         <Box
           component="form"
           sx={{
@@ -115,7 +94,7 @@ class LoginForm extends React.Component {
             <OutlinedInput
               id="email"
               type='email'
-              onChange={this.onChange}
+              onChange={onChangeHandler}
               name='email'
               label="Email"
             />
@@ -125,17 +104,17 @@ class LoginForm extends React.Component {
             <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
             <OutlinedInput
               id="password"
-              type={this.state.showPassword ? 'text' : 'password'}
-              onChange={this.onChange}
+              type={showPassword ? 'text' : 'password'}
+              onChange={onChangeHandler}
               name='password'
               endAdornment={
                 <InputAdornment position="end">
                   <IconButton
-                    onClick={this.handleClickShowPassword}
-                    onMouseDown={this.handleMouseDownPassword}
+                    onClick={handleClickShowPassword}
+                    onMouseDown={handleMouseDownPassword}
                     edge="end"
                   >
-                    {this.state.showPassword? <VisibilityOffIcon/> : <VisibilityIcon/>}
+                    {showPassword? <VisibilityOffIcon/> : <VisibilityIcon/>}
                   </IconButton>
                 </InputAdornment>
               }
@@ -143,14 +122,16 @@ class LoginForm extends React.Component {
             />
           </FormControl>
           {message ? <Alert severity="warning">{message}</Alert> : null}
-          <Button variant="contained" onClick={this.onSubmit}>
+          <Button variant="contained" onClick={onSubmitHandler}>
             Submit
           </Button>
           </Stack>
         </Box>
       </section>
-    )
-  }
+    }
+    </div>
+  )
 }
+
 
 export default LoginForm

@@ -1,0 +1,11 @@
+.FlashcardPage .addButton {
+    margin-top: 5px;
+    width: 5px;
+    border-radius: 25px;
+    transition: 0.1s ease;
+}
+
+.FlashcardPage .addButton:hover {
+    width: 12ch;
+    border-radius: 12px;
+}
