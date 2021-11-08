@@ -8,6 +8,8 @@ import {
 import auth from './firebase'
 
 import LoginForm from './components/LoginForm'
+import PrivateRoute from './components/PrivateRoute';
+import FlashcardPage from './components/FlashcardPage';
 import './App.css'
 
 import AppBar from '@mui/material/AppBar';
@@ -130,9 +132,14 @@ function App (){
             style={{ minHeight: '100vh' }}
           >
             <Routes>
-              <Route exact path="/" element={ <p>main page</p> }/>
+              <Route exact path="/" element={ <h1>Welcome to Flashcard app</h1> }/>
               <Route exact path="/login" element={
                   <LoginForm authState={authState} setAuthState={setAuthState}/>
+              } />
+              <Route exact path="/flashcard" element={
+                <PrivateRoute authState={authState}>
+                  <FlashcardPage/>
+                </PrivateRoute>
               } />
             </Routes>
           </Grid> 

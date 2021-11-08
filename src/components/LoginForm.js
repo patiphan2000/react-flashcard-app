@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import auth from '../firebase'
-import { Navigate, useNavigate, Route } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 
 import Box from '@mui/material/Box';
 import Stack  from '@mui/material/Stack';
