@@ -97,7 +97,7 @@ function App (){
                 <MenuIcon />
               </IconButton>
               <Typography 
-              variant="h6" 
+              variant="h3" 
               component="div" 
               sx={{ flexGrow: 2 }}>
                 FlashCard
