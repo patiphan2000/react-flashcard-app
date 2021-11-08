@@ -13,10 +13,12 @@ const sampleFlashcardList = [
     {
         id: 1,
         front: {
-            text: 'front text'
+            text: 'front text',
+            subText: 'front subtext'
         },
         back: {
-            text: 'back text'
+            text: 'back text',
+            subText: 'back subtext'
         }
     }
 ]
@@ -37,7 +39,7 @@ function FlashcardPage () {
             <Grid item xs={12}>
                 <Typography variant="h5" sx={{ marginTop: "15px" }}>flip your card</Typography>
             </Grid>
-            <Grid item xs={12}>
+            <Grid item xs>
                 <Flashcard flashcard={sampleFlashcardList[0]}></Flashcard>
             </Grid>
             <Grid container spacing={{ xs: 2, md: 1 }}>

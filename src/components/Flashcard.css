@@ -4,8 +4,6 @@
     justify-content: center;
     position: relative;
     transform-style: preserve-3d;
-    height: 150px;
-    width: 150px;
     transform: perspective(1000px) rotateY(var(--rotate-y, 0))
     translateY(var(--translate-y, 0));
     transition: 150ms;
@@ -21,6 +19,7 @@
 
 .flashcard .front,
 .flashcard .back {
+    min-width: 300px;
     position: absolute;
     padding: 1rem;
     backface-visibility: hidden;

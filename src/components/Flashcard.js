@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import './Flashcard.css'
 
 import Typography from '@mui/material/Typography';
@@ -11,13 +11,30 @@ import AutorenewIcon from '@mui/icons-material/Autorenew';
 function Flashcard({ flashcard }) {
 
     const [flip, setFlip] = useState(false)
+    const [height, setHeight] = useState('initial')
+
+    const frontEl = useRef()
+    const backEl = useRef()
+
+    const setMaxHeight = () => {
+        const frontHeight = frontEl.current.getBoundingClientRect().height
+        const backHeight = backEl.current.getBoundingClientRect().height
+        setHeight(Math.max(frontHeight, backHeight, 250))
+    }
+
+    useEffect(() => {
+        setMaxHeight()
+    }, [flashcard.text, flashcard.subText])
 
     return (
-        <div className={`flashcard ${flip? 'flip':''}`}>
-            <div className="front">
+        <div className={`flashcard ${flip? 'flip':''}`} style={{height: height}}>
+            <div className="front" ref={frontEl}>
                 <Card>
                     <CardContent>
-                        <Typography variant="h6">{flashcard.front.text}</Typography>
+                        <Typography className="text" variant="h5">{flashcard.front.text}</Typography>
+                    </CardContent>
+                    <CardContent>
+                        <Typography className="subText" variant="subtitle2">{flashcard.front.subText}</Typography>
                     </CardContent>
                     <CardActions style={{justifyContent: 'center'}}>
                         <IconButton aria-label="autorenewIcon" size="large"
@@ -27,10 +44,13 @@ function Flashcard({ flashcard }) {
                     </CardActions>
                 </Card>
                 </div>
-            <div className="back">
+            <div className="back" ref={backEl}>
                 <Card>
                     <CardContent>
-                        <Typography variant="h6">{flashcard.back.text}</Typography>
+                        <Typography className="text" variant="h5">{flashcard.back.text}</Typography>
+                    </CardContent>
+                    <CardContent>
+                        <Typography className="subText" variant="subtitle2">{flashcard.back.subText}</Typography>
                     </CardContent>
                     <CardActions style={{justifyContent: 'center'}}>
                         <IconButton aria-label="autorenewIcon" size="large"
