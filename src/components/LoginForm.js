@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import auth from '../firebase'
+import firebase from '../firebase'
 import { Navigate, useNavigate } from "react-router-dom";
 
 import Box from '@mui/material/Box';
@@ -36,7 +36,7 @@ function LoginForm ({authState, setAuthState}) {
     const email = authState.email
     const password = authState.password
     
-    auth
+    firebase.auth()
       .signInWithEmailAndPassword(email, password)
       .then(response => {
         setAuthState({
@@ -53,7 +53,7 @@ function LoginForm ({authState, setAuthState}) {
 
   const logout = (e) => {
     e.preventDefault()
-    auth.signOut().then(response => {
+    firebase.auth().signOut().then(response => {
       setAuthState({
         currentUser: null
       })

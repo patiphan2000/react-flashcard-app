@@ -1,4 +1,7 @@
 import React, { useState } from 'react'
+import firebase from '../firebase'
+import 'firebase/firestore'
+import { useCollectionData } from 'react-firebase-hooks/firestore'
 import './FlashcardPage.css'
 
 import Typography from '@mui/material/Typography';
@@ -23,9 +26,17 @@ const sampleFlashcardList = [
     }
 ]
 
-function FlashcardPage () {
+function FlashcardPage ({authState}) {
 
     const [hoverAdd, setHoverAdd] = useState(false)
+
+    const firestore = firebase.firestore()
+    
+    const dataRef = firestore.collection('users');
+    const query = dataRef.orderBy('num');
+    const [flashcard] = useCollectionData(query, {idField: 'id'});
+    console.log(flashcard);
+
 
     return (
         <Grid

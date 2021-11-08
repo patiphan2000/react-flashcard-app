@@ -1,11 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   BrowserRouter as Router,
   Route,
   Link,
   Routes,
 } from "react-router-dom";
-import auth from './firebase'
+import firebase from './firebase'
 
 import LoginForm from './components/LoginForm'
 import PrivateRoute from './components/PrivateRoute';
@@ -44,7 +44,7 @@ function App (){
 
   const logout = (e) => {
     e.preventDefault()
-    auth.signOut().then(response => {
+    firebase.auth().signOut().then(response => {
       setAuthState({
         currentUser: null
       })
@@ -79,6 +79,16 @@ function App (){
       <MenuItem onClick={logout}>Logout</MenuItem>
     </Menu>
   );
+
+  useEffect(() => {
+    firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        setAuthState({
+          currentUser: user
+        })
+      }
+    })
+  }, []);
 
   return (
     <div className="App">
@@ -132,13 +142,16 @@ function App (){
             style={{ minHeight: '100vh' }}
           >
             <Routes>
-              <Route exact path="/" element={ <h1>Welcome to Flashcard app</h1> }/>
+              <Route exact path="/" element={ <div>
+                <h1>Welcome to Flashcard app</h1>
+                <Button component={Link} to="/flashcard">flashcard</Button>
+              </div> }/>
               <Route exact path="/login" element={
                   <LoginForm authState={authState} setAuthState={setAuthState}/>
               } />
               <Route exact path="/flashcard" element={
                 <PrivateRoute authState={authState}>
-                  <FlashcardPage/>
+                  <FlashcardPage authState={authState}/>
                 </PrivateRoute>
               } />
             </Routes>
