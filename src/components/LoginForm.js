@@ -26,7 +26,6 @@ function LoginForm ({authState, setAuthState}) {
     const { name, value } = e.target
     // console.log(name, value);
     var authData = authState
-    console.log(authData);
     authData[name] = value
     setAuthState(authData)
   }
