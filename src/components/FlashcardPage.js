@@ -1,8 +1,6 @@
 import React, { useState } from 'react'
-import firebase from '../firebase'
-import 'firebase/firestore'
-import { useCollectionData } from 'react-firebase-hooks/firestore'
 import './FlashcardPage.css'
+import { getFlashcard, addFlashcard, updateFlashcard } from '../db/database'
 
 import Typography from '@mui/material/Typography';
 import Flashcard from './Flashcard';
@@ -30,13 +28,9 @@ function FlashcardPage ({authState}) {
 
     const [hoverAdd, setHoverAdd] = useState(false)
 
-    const firestore = firebase.firestore()
-    
-    const dataRef = firestore.collection('users');
-    const query = dataRef.orderBy('num');
-    const [flashcard] = useCollectionData(query, {idField: 'id'});
-    console.log(flashcard);
-
+    const fetchData = async () => {
+        await updateFlashcard();
+    }
 
     return (
         <Grid
@@ -65,7 +59,8 @@ function FlashcardPage ({authState}) {
                 <Grid item xs={12}>
                     <Button className="addButton" variant="contained" endIcon={<AddIcon sx={{marginLeft:hoverAdd? '0': '-12px'}}/>} color="success" 
                     onMouseOver={() => {setHoverAdd(true)}}
-                    onMouseOut={() => {setHoverAdd(false)}}>
+                    onMouseOut={() => {setHoverAdd(false)}}
+                    onClick={fetchData}>
                         {hoverAdd? 'add': null}
                     </Button>
                 </Grid>

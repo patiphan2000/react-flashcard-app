@@ -5,7 +5,8 @@ import {
   Link,
   Routes,
 } from "react-router-dom";
-import firebase from './firebase'
+import {app, db} from './firebase'
+import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 
 import LoginForm from './components/LoginForm'
 import PrivateRoute from './components/PrivateRoute';
@@ -26,6 +27,7 @@ import MenuItem from '@mui/material/MenuItem';
 import MenuIcon from '@mui/icons-material/Menu';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 
+const auth = getAuth(app);
 
 function App (){
 
@@ -42,9 +44,9 @@ function App (){
 
   const user = authState.currentUser;
 
-  const logout = (e) => {
+  const logout = async (e) => {
     e.preventDefault()
-    firebase.auth().signOut().then(response => {
+    await signOut(auth).then(response => {
       setAuthState({
         currentUser: null
       })
@@ -80,15 +82,15 @@ function App (){
     </Menu>
   );
 
-  useEffect(() => {
-    firebase.auth().onAuthStateChanged(user => {
-      if (user) {
-        setAuthState({
-          currentUser: user
-        })
-      }
-    })
-  }, []);
+  // useEffect(() => {
+  //   onAuthStateChanged(auth, user => {
+  //     if (user) {
+  //       setAuthState({
+  //         currentUser: user
+  //       })
+  //     }
+  //   })
+  // }, []);
 
   return (
     <div className="App">
@@ -150,7 +152,7 @@ function App (){
                   <LoginForm authState={authState} setAuthState={setAuthState}/>
               } />
               <Route exact path="/flashcard" element={
-                <PrivateRoute authState={authState}>
+                <PrivateRoute>
                   <FlashcardPage authState={authState}/>
                 </PrivateRoute>
               } />
