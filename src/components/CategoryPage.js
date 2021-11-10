@@ -13,21 +13,20 @@ import Grid from '@mui/material/Grid';
 
 const auth = getAuth(app);
 
-
 function CategoryPage ({}) {
 
     const [categorys, setCategorys] = useState([]);
 
     const fetchData = async () => {
-        const cc = await getCategory(auth.currentUser.email);
-        setCategorys(cc)
+        if (await auth.currentUser != null) {
+            const cc = await getCategory(auth.currentUser.email);
+            setCategorys(cc)
+        }
     }
 
     useEffect(() => {
-        if (auth.currentUser != null) {
-          fetchData()
-        }
-      }, []);
+        fetchData()
+    }, []);
 
     return (
         <Grid 

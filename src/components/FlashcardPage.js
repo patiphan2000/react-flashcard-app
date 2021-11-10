@@ -13,6 +13,7 @@ import Button from '@mui/material/Button';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import AddIcon from '@mui/icons-material/Add';
 
+
 const auth = getAuth(app)
 
 const card = {
@@ -29,8 +30,6 @@ const card = {
 var indexNum = 0;
 
 function FlashcardPage () {
-
-    console.log('re-render FlashcardPage');
 
     const { categoryName } = useParams()
 
