@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, useImperativeHandle } from 'react'
 import './Flashcard.css'
 
 import Typography from '@mui/material/Typography';
@@ -8,9 +8,8 @@ import CardContent from '@mui/material/CardContent';
 import IconButton from '@mui/material/IconButton';
 import AutorenewIcon from '@mui/icons-material/Autorenew';
 
-function Flashcard({ flashcard }) {
+function Flashcard({ flashcard, flip, setFlip }) {
 
-    const [flip, setFlip] = useState(false)
     const [height, setHeight] = useState('initial')
 
     const frontEl = useRef()
@@ -24,6 +23,7 @@ function Flashcard({ flashcard }) {
 
     useEffect(() => {
         setMaxHeight()
+        setFlip(false)
     }, [flashcard.text, flashcard.subText])
 
     return (

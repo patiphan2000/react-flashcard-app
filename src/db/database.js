@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const request = axios.create({ baseURL: 'https://flash-card-dc8b8-default-rtdb.asia-southeast1.firebasedatabase.app/' })
+const request = axios.create({ baseURL: process.env.REACT_APP_DATABASE_END_POINT })
 
 const data = {
     users: [
@@ -29,6 +29,16 @@ const data = {
                                 text: 'back2',
                                 subText: 'back sub'
                             }
+                        },
+                        {
+                            front: {
+                                text: 'front3',
+                                subText: 'front sub'
+                            },
+                            back: {
+                                text: 'back3',
+                                subText: 'back sub'
+                            }
                         }
                     ]
                 },
@@ -37,19 +47,19 @@ const data = {
     ]
 }
 
-export function getFlashcard() {
-    request.get('/flashcard.json').then(response => {
-        const fetchData = [];
-        for (let key in response.data) {
-            fetchData.unshift(
-                {
-                ...response.data[key],
-                id: key
-                }
-            )
-        }
-        console.log(fetchData[0]);
-    })
+export async function getCategory(userEmail) {
+    const response = await request.get('/flashcard.json')
+    const data = response.data
+    const users = data.users
+    var category;
+    for (var user in users) {
+        const email = users[user].email;
+        if (email === userEmail){
+            category = users[user].category;
+            return category
+        } 
+    }
+    return []
 }
 
 export function updateFlashcard({ flashcardInfo }) {
