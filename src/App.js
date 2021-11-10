@@ -1,15 +1,17 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   BrowserRouter as Router,
   Route,
   Link,
   Routes,
 } from "react-router-dom";
-import auth from './firebase'
+import { app } from './firebase'
+import { getAuth, signOut } from "firebase/auth";
 
 import LoginForm from './components/LoginForm'
 import PrivateRoute from './components/PrivateRoute';
 import FlashcardPage from './components/FlashcardPage';
+import CategoryPage from './components/CategoryPage';
 import './App.css'
 
 import AppBar from '@mui/material/AppBar';
@@ -23,9 +25,9 @@ import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import MenuIcon from '@mui/icons-material/Menu';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 
+const auth = getAuth(app);
 
 function App (){
 
@@ -40,11 +42,9 @@ function App (){
 
   const isMenuOpen = Boolean(anchorEl);
 
-  const user = authState.currentUser;
-
-  const logout = (e) => {
+  const logout = async (e) => {
     e.preventDefault()
-    auth.signOut().then(response => {
+    await signOut(auth).then(response => {
       setAuthState({
         currentUser: null
       })
@@ -80,6 +80,21 @@ function App (){
     </Menu>
   );
 
+  useEffect(() => {
+    auth.onAuthStateChanged(function(user) {
+      if (user) {
+        setAuthState({
+          currentUser: auth.currentUser
+        })
+      } else {
+        // No user is signed in.
+        console.log('There is no logged in user');
+      }
+    });
+  }, []);
+
+  const user = authState.currentUser
+
   return (
     <div className="App">
       <Router>
@@ -87,15 +102,6 @@ function App (){
         <Box sx={{ flexGrow: 1 }}>
           <AppBar position="static">
             <Toolbar>
-              <IconButton
-                size="large"
-                edge="start"
-                color="inherit"
-                aria-label="menu"
-                sx={{ mr: 2 }}
-              >
-                <MenuIcon />
-              </IconButton>
               <Typography 
               variant="h3" 
               component="div" 
@@ -132,13 +138,21 @@ function App (){
             style={{ minHeight: '100vh' }}
           >
             <Routes>
-              <Route exact path="/" element={ <h1>Welcome to Flashcard app</h1> }/>
-              <Route exact path="/login" element={
+              <Route path="/" element={ <div>
+                <h1>Welcome to Flashcard app</h1>
+                <Button component={Link} to="/category">flashcard</Button>
+              </div> }/>
+              <Route path="/login" element={
                   <LoginForm authState={authState} setAuthState={setAuthState}/>
               } />
-              <Route exact path="/flashcard" element={
-                <PrivateRoute authState={authState}>
-                  <FlashcardPage/>
+              <Route path="/category" element={
+                <PrivateRoute>
+                  <CategoryPage/>
+                </PrivateRoute>
+              } />
+              <Route path="/category/:categoryName" element={
+                <PrivateRoute>
+                  <FlashcardPage authState={authState}/>
                 </PrivateRoute>
               } />
             </Routes>
