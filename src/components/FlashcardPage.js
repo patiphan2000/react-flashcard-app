@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 import { app } from '../firebase'
 import { getAuth } from "firebase/auth";
 import './FlashcardPage.css'
@@ -29,6 +29,8 @@ const card = {
 var indexNum = 0;
 
 function FlashcardPage () {
+
+    console.log('re-render FlashcardPage');
 
     const { categoryName } = useParams()
 
@@ -77,7 +79,15 @@ function FlashcardPage () {
                     }}
                     onClick={()=>{
                         var num = Math.floor(Math.random() * indexNum)
-                        while (cardNum === num) { num = Math.floor(Math.random() * indexNum) }
+                        var keepCalling = 0;
+                        while (cardNum === num) { 
+                            num = Math.floor(Math.random() * indexNum)
+                            keepCalling++;
+                            if (keepCalling > 100) {
+                                fetchData()
+                                break
+                            }
+                        }
                         setFlip(false)
                         setTimeout(function() {
                             setCardNum(num)

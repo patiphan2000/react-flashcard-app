@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { getAuth, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { Navigate, useNavigate } from "react-router-dom";
 
 import Box from '@mui/material/Box';
@@ -50,15 +50,6 @@ function LoginForm ({authState, setAuthState}) {
           message: error.message
         })
       })
-  }
-
-  const logout = async (e) => {
-    e.preventDefault()
-    await signOut(auth).then(response => {
-      setAuthState({
-        currentUser: null
-      })
-    })
   }
 
   const handleClickShowPassword = () => {

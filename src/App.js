@@ -138,19 +138,19 @@ function App (){
             style={{ minHeight: '100vh' }}
           >
             <Routes>
-              <Route path="/" element={ <div>
+              <Route exact path="/" element={ <div>
                 <h1>Welcome to Flashcard app</h1>
                 <Button component={Link} to="/category">flashcard</Button>
               </div> }/>
-              <Route path="/login" element={
+              <Route exact path="/login" element={
                   <LoginForm authState={authState} setAuthState={setAuthState}/>
               } />
-              <Route path="/category" element={
+              <Route exact path="/category" element={
                 <PrivateRoute>
                   <CategoryPage/>
                 </PrivateRoute>
               } />
-              <Route path="/category/:categoryName" element={
+              <Route exact path="/category/:categoryName" element={
                 <PrivateRoute>
                   <FlashcardPage authState={authState}/>
                 </PrivateRoute>
