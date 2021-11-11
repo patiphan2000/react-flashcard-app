@@ -13,6 +13,7 @@ import Stack from '@mui/material/Stack';
 import { Card, CardContent, CardActionArea } from '@mui/material';
 import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
+import Collapse from '@mui/material/Collapse';
 
 
 const auth = getAuth(app);
@@ -41,6 +42,16 @@ function ManagePage (){
                 }
             }
         }
+    }
+
+    const openTable = () => {
+        var result = false
+        if (selectedCategory != "") {
+            result = true
+        }
+        setTimeout(function() {
+        }, 100);
+        return result
     }
 
     useEffect(() => {
@@ -80,7 +91,9 @@ function ManagePage (){
                     </Stack>
                 </Grid>
                 <Grid item xs={12} sx={{marginTop: "2rem"}}>
-                    <FlashcardTable flashcards={flashcardList}></FlashcardTable>     
+                    <Collapse in={openTable()}>
+                        <FlashcardTable flashcards={flashcardList}></FlashcardTable>     
+                    </Collapse>
                 </Grid>
                 { selectedCategory!=""?  
                 <Grid item xs={12}>
