@@ -1,4 +1,5 @@
 import axios from 'axios'
+import * as sample from './sample.json'
 
 const request = axios.create({ baseURL: process.env.REACT_APP_DATABASE_END_POINT })
 
@@ -57,44 +58,24 @@ export async function getCategory(userEmail) {
         if (email === userEmail){
             category = users[user].category;
             return category
-        } 
+        }
     }
     return []
 }
 
-export function updateFlashcard({ flashcardInfo }) {
-    var newData = data;
-    newData['users'].push({
-        email: 'spider@email.com',
-        category: [
-            {
-                name: 'Food',
-                flashcards: [
-                    {
-                        front: {
-                            text: 'Orange',
-                            subText: 'front sub'
-                        },
-                        back: {
-                            text: 'ส้ม',
-                            subText: 'back sub'
-                        }
-                    },
-                    {
-                        front: {
-                            text: 'Apple',
-                            subText: 'front sub'
-                        },
-                        back: {
-                            text: 'แอปเปิล',
-                            subText: 'back sub'
-                        }
-                    }
-                ]
-            },
-        ]
-    })
+export function updateFlashcard() {
+    const newData = {
+        users: sample.users
+    }
     request.patch('/flashcard.json', newData).then(response => {
         console.log(response);
     })
+}
+
+export async function compareFlashcard() {
+    console.log('compare!!');
+    const response = await request.get('/flashcard.json')
+    const data = response.data
+    const result = (data.users == sample.users);
+    return result
 }

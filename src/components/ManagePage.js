@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { app } from '../firebase'
 import { getAuth } from "firebase/auth";
-import { getCategory } from '../db/database'
+import { getCategory, compareFlashcard, updateFlashcard } from '../db/database'
 
 import FlashcardTable from './FlashcardTable';
 import AddButton from './AddButton';
@@ -12,6 +12,7 @@ import Divider from '@mui/material/Divider';
 import Stack from '@mui/material/Stack';
 import { Card, CardContent, CardActionArea } from '@mui/material';
 import CardMedia from '@mui/material/CardMedia';
+import Button from '@mui/material/Button';
 
 
 const auth = getAuth(app);
@@ -21,6 +22,7 @@ function ManagePage (){
     const [selectedCategory, setselectedCategory] = useState("")
     const [categorys, setCategorys] = useState([]);
     const [flashcardList, setFlashcardList] = useState([])
+    const [result, setResult] = useState(false)
 
     const fetchData = async () => {
         if (await auth.currentUser != null) {
@@ -81,7 +83,13 @@ function ManagePage (){
                 <Grid item xs={12} sx={{marginTop: "2rem"}}>
                     <FlashcardTable flashcards={flashcardList}></FlashcardTable>     
                 </Grid>
-                { selectedCategory!=""?  <AddButton/>: ""}
+                { selectedCategory!=""?  
+                <AddButton clickHandler={async ()=>{
+                    const bb = await compareFlashcard();
+                    setResult(bb)}}/>
+                : ""}
+                <Card sx={{ backgroundColor: result? "green":"red" }}>compare result</Card>
+                <Button onClick={updateFlashcard}>update</Button>
             </Grid>
         </div>
     )

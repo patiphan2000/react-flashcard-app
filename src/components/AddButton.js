@@ -4,7 +4,7 @@ import './AddButton.css'
 import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
 
-function AddButton() {
+function AddButton({clickHandler}) {
 
     const [hoverAdd, setHoverAdd] = useState(false)
 
@@ -14,6 +14,7 @@ function AddButton() {
             color="success" 
             onMouseOver={() => {setHoverAdd(true)}}
             onMouseOut={() => {setHoverAdd(false)}}
+            onClick={clickHandler}
             >
                 {hoverAdd? 'add': null}
         </Button>
