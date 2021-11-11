@@ -16,14 +16,13 @@ import Paper from '@mui/material/Paper';
 import Checkbox from '@mui/material/Checkbox';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Switch from '@mui/material/Switch';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
 
-function createData(frontText, frontSubText, backText, backSubtext) {
+function createData(id, frontText, frontSubText, backText, backSubtext) {
   return {
+    id,
     frontText,
     frontSubText,
     backText,
@@ -70,19 +69,19 @@ const headCells = [
   },
   {
     id: 'frontSubtext',
-    numeric: true,
+    numeric: false,
     disablePadding: false,
     label: 'FRONT SUBTEXT',
   },
   {
     id: 'backText',
-    numeric: true,
+    numeric: false,
     disablePadding: false,
     label: 'BACK TEXT',
   },
   {
     id: 'back subtext',
-    numeric: true,
+    numeric: false,
     disablePadding: false,
     label: 'BACK SUBTEXT',
   },
@@ -112,7 +111,7 @@ function EnhancedTableHead(props) {
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
-            align={headCell.numeric ? 'right' : 'left'}
+            align={headCell.numeric ? 'right' : 'center'}
             padding={headCell.disablePadding ? 'none' : 'normal'}
             sortDirection={orderBy === headCell.id ? order : false}
           >
@@ -176,11 +175,12 @@ const EnhancedTableToolbar = (props) => {
           </IconButton>
         </Tooltip>
       ) : (
-        <Tooltip title="Filter list">
-          <IconButton>
-            <FilterListIcon />
-          </IconButton>
-        </Tooltip>
+        // <Tooltip title="Filter list">
+        //   <IconButton>
+        //     <FilterListIcon />
+        //   </IconButton>
+        // </Tooltip>
+        <div></div>
       )}
     </Toolbar>
   );
@@ -194,7 +194,7 @@ export default function FlashcardTable({flashcards}) {
 
     const [rows, setRows] = React.useState([0]);
     const [order, setOrder] = React.useState('asc');
-    const [orderBy, setOrderBy] = React.useState('calories');
+    const [orderBy, setOrderBy] = React.useState('initial');
     const [selected, setSelected] = React.useState([]);
     const [page, setPage] = React.useState(0);
     const [dense, setDense] = React.useState(false);
@@ -208,19 +208,19 @@ export default function FlashcardTable({flashcards}) {
 
     const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = rows.map((n) => n.name);
+      const newSelecteds = rows.map((n) => n.id);
       setSelected(newSelecteds);
       return;
     }
     setSelected([]);
     };
 
-    const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
+    const handleClick = (event, id) => {
+    const selectedIndex = selected.indexOf(id);
     let newSelected = [];
 
     if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
+      newSelected = newSelected.concat(selected, id);
     } else if (selectedIndex === 0) {
       newSelected = newSelected.concat(selected.slice(1));
     } else if (selectedIndex === selected.length - 1) {
@@ -244,11 +244,7 @@ export default function FlashcardTable({flashcards}) {
         setPage(0);
     };
 
-    const handleChangeDense = (event) => {
-        setDense(event.target.checked);
-    };
-
-    const isSelected = (name) => selected.indexOf(name) !== -1;
+    const isSelected = (id) => selected.indexOf(id) !== -1;
 
     // Avoid a layout jump when reaching the last page with empty rows.
     const emptyRows =
@@ -256,11 +252,11 @@ export default function FlashcardTable({flashcards}) {
 
     React.useEffect(() => {
         var newRows = []
-        flashcards.map((card) => {
-            newRows.push(createData(card.front.text, card.front.subText, card.back.text, card.back.subText))
+        flashcards.map((card, index) => {
+            newRows.push(createData(index, card.front.text, card.front.subText, card.back.text, card.back.subText))
         })
         setRows(newRows)
-    }, [])
+    }, [flashcards])
 
     return (
     <Box sx={{ width: '100%' }}>
@@ -270,7 +266,7 @@ export default function FlashcardTable({flashcards}) {
           <Table
             sx={{ minWidth: 750 }}
             aria-labelledby="tableTitle"
-            size={dense ? 'small' : 'medium'}
+            size='medium'
           >
             <EnhancedTableHead
               numSelected={selected.length}
@@ -292,7 +288,7 @@ export default function FlashcardTable({flashcards}) {
                   return (
                     <TableRow
                       hover
-                      onClick={(event) => handleClick(event, row.name)}
+                      onClick={(event) => handleClick(event, row.id)}
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
@@ -308,25 +304,17 @@ export default function FlashcardTable({flashcards}) {
                           }}
                         />
                       </TableCell>
-                      <TableCell
-                        component="th"
-                        id={labelId}
-                        scope="row"
-                        padding="none"
-                      >
-                        {index}
-                      </TableCell>
-                      <TableCell align="right">{row.frontText}</TableCell>
-                      <TableCell align="right">{row.frontSubText}</TableCell>
-                      <TableCell align="right">{row.backText}</TableCell>
-                      <TableCell align="right">{row.backSubtext}</TableCell>
+                      <TableCell align="center">{row.frontText}</TableCell>
+                      <TableCell align="center">{row.frontSubText}</TableCell>
+                      <TableCell align="center">{row.backText}</TableCell>
+                      <TableCell align="center">{row.backSubtext}</TableCell>
                     </TableRow>
                   );
                 })}
               {emptyRows > 0 && (
                 <TableRow
                   style={{
-                    height: (dense ? 33 : 53) * emptyRows,
+                    height: (53) * emptyRows,
                   }}
                 >
                   <TableCell colSpan={6} />
@@ -345,10 +333,6 @@ export default function FlashcardTable({flashcards}) {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Paper>
-      <FormControlLabel
-        control={<Switch checked={dense} onChange={handleChangeDense} />}
-        label="Dense padding"
-      />
     </Box>
   );
 }

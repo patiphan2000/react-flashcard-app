@@ -4,6 +4,7 @@ import { getAuth } from "firebase/auth";
 import { getCategory } from '../db/database'
 
 import FlashcardTable from './FlashcardTable';
+import AddButton from './AddButton';
 
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
@@ -15,9 +16,9 @@ import CardMedia from '@mui/material/CardMedia';
 
 const auth = getAuth(app);
 
-function ManagePage ({ categoryName="", add=false }){
+function ManagePage (){
 
-    const [selectedCategory, setselectedCategory] = useState(categoryName)
+    const [selectedCategory, setselectedCategory] = useState("")
     const [categorys, setCategorys] = useState([]);
     const [flashcardList, setFlashcardList] = useState([])
 
@@ -27,11 +28,14 @@ function ManagePage ({ categoryName="", add=false }){
             setCategorys(cc)
             if (selectedCategory == "") {
                 setFlashcardList([])
+                return;
             }
-            for (var fc in categorys) {
-                if (categorys[fc].name == selectedCategory) {
-                    setFlashcardList(categorys[fc].flashcards)
-                    console.log(flashcardList);
+            else {
+                for (var fc in categorys) {
+                    if (categorys[fc].name == selectedCategory) {
+                        setFlashcardList(categorys[fc].flashcards)
+                        return;
+                    }
                 }
             }
         }
@@ -39,7 +43,7 @@ function ManagePage ({ categoryName="", add=false }){
 
     useEffect(() => {
         fetchData()
-    }, []);
+    }, [selectedCategory]);
 
     return (
         <div>
@@ -57,7 +61,7 @@ function ManagePage ({ categoryName="", add=false }){
                         {categorys.map((cat, index) => {
                             return (
                                 <Card key={index} sx={{ maxWidth: 400 }}>
-                                    <CardActionArea>
+                                    <CardActionArea onClick={()=>{(selectedCategory=="")? setselectedCategory(cat.name):setselectedCategory("")}}>
                                         <CardMedia
                                         component="img"
                                         height="100"
@@ -77,6 +81,7 @@ function ManagePage ({ categoryName="", add=false }){
                 <Grid item xs={12} sx={{marginTop: "2rem"}}>
                     <FlashcardTable flashcards={flashcardList}></FlashcardTable>     
                 </Grid>
+                { selectedCategory!=""?  <AddButton/>: ""}
             </Grid>
         </div>
     )

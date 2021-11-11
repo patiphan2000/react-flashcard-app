@@ -1,17 +1,16 @@
 import React, { useState, useEffect } from 'react'
 import { app } from '../firebase'
 import { getAuth } from "firebase/auth";
-import './FlashcardPage.css'
 import { useParams } from "react-router-dom";
 import { getCategory, updateFlashcard } from '../db/database'
 
 import Typography from '@mui/material/Typography';
 import Flashcard from './Flashcard';
+import AddButton from './AddButton';
 
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
-import AddIcon from '@mui/icons-material/Add';
 
 
 const auth = getAuth(app)
@@ -33,7 +32,6 @@ function FlashcardPage () {
 
     const { categoryName } = useParams()
 
-    const [hoverAdd, setHoverAdd] = useState(false)
     const [flashcardList, setFlashcardList] = useState([card])
     const [cardNum, setCardNum] = useState(0)
     const [flip, setFlip] = useState(false)
@@ -97,12 +95,7 @@ function FlashcardPage () {
                     </Button>
                 </Grid>
                 <Grid item xs={12}>
-                    <Button className="addButton" variant="contained" endIcon={<AddIcon sx={{marginLeft:hoverAdd? '0': '-12px'}}/>} color="success" 
-                    onMouseOver={() => {setHoverAdd(true)}}
-                    onMouseOut={() => {setHoverAdd(false)}}
-                    onClick={updateFlashcard}>
-                        {hoverAdd? 'add': null}
-                    </Button>
+                    <AddButton/>
                 </Grid>
             </Grid>
         </Grid>
