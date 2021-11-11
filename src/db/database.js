@@ -76,6 +76,8 @@ export async function compareFlashcard() {
     console.log('compare!!');
     const response = await request.get('/flashcard.json')
     const data = response.data
-    const result = (data.users == sample.users);
+    const result = (data.users === sample.users);
+    console.log(data.users);
+    console.log(sample.users);
     return result
 }

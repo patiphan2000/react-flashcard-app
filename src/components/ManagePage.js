@@ -48,7 +48,6 @@ function ManagePage (){
     }, [selectedCategory]);
 
     return (
-        <div>
             <Grid container
                 spacing={0}
                 direction="column"
@@ -84,14 +83,15 @@ function ManagePage (){
                     <FlashcardTable flashcards={flashcardList}></FlashcardTable>     
                 </Grid>
                 { selectedCategory!=""?  
-                <AddButton clickHandler={async ()=>{
-                    const bb = await compareFlashcard();
-                    setResult(bb)}}/>
+                <Grid item xs={12}>
+                    <AddButton clickHandler={async ()=>{
+                        const bb = await compareFlashcard();
+                        setResult(bb)}}/>
+                </Grid>
                 : ""}
                 <Card sx={{ backgroundColor: result? "green":"red" }}>compare result</Card>
                 <Button onClick={updateFlashcard}>update</Button>
             </Grid>
-        </div>
     )
 }
 

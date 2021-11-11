@@ -17,7 +17,6 @@ import Checkbox from '@mui/material/Checkbox';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import DeleteIcon from '@mui/icons-material/Delete';
-import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
 
 function createData(id, frontText, frontSubText, backText, backSubtext) {
@@ -259,10 +258,10 @@ export default function FlashcardTable({flashcards}) {
     }, [flashcards])
 
     return (
-    <Box sx={{ width: '100%' }}>
+    <Box sx={{ width: "60vw" }}>
       <Paper sx={{ width: '100%', mb: 2 }}>
         <EnhancedTableToolbar numSelected={selected.length} />
-        <TableContainer>
+        <TableContainer sx={{ overflowX: 'auto' }}>
           <Table
             sx={{ minWidth: 750 }}
             aria-labelledby="tableTitle"

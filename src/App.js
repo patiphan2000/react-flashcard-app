@@ -51,7 +51,7 @@ function App (){
 
         <Navbar authState={authState} setAuthState={setAuthState}/>
         
-        <Container maxWidth="sm">
+        <Container>
           <Grid
             container
             spacing={0}
