@@ -1,4 +1,7 @@
 import React, { useState } from 'react'
+import { app } from '../firebase'
+import { getAuth } from "firebase/auth";
+import { addNewCard } from '../db/database'
 
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
@@ -16,6 +19,8 @@ import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 
 
+const auth = getAuth(app);
+
 const bull = (
     <Box
       component="span"
@@ -32,17 +37,18 @@ return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 function AddFlashcardForm({category}) {
 
     const [newCard, setNewcard] = useState({
-        front: {
+        back: {
             text: '',
             subText: ''
         },
-        back: {
+        front: {
             text: '',
             subText: ''
         }
     })
     const [validCard, setValidCard] = useState(false)
     const [openSnackbar, setOpenSnackbar] = useState(false)
+    const [alertBar, setAlertBar] = useState()
 
     const textChangeHandler = (e) => {
         const {name, value} = e.target
@@ -56,11 +62,27 @@ function AddFlashcardForm({category}) {
         if (newCard.front.text.replace(/\s/g,"") != "" 
             &&
         newCard.back.text.replace(/\s/g,"") != "") {
-            setValidCard(true)
-            setOpenSnackbar(true)
-            return;
+            const status = addNewCardToDB()
+            if (status) {
+                setAlertBar(
+                    <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+                        flashcard is successfully added!
+                    </Alert>
+                )
+                setOpenSnackbar(true)
+                return;
+            }
+            setAlertBar(
+                <Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}>
+                    fn error occurred card failed to add!
+                </Alert>
+            )
         }
-        setValidCard(false)
+        setAlertBar(
+            <Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}>
+                front text and back text cannot be empty!
+            </Alert>
+        )
         setOpenSnackbar(true)
     }
 
@@ -71,6 +93,15 @@ function AddFlashcardForm({category}) {
 
     setOpenSnackbar(false);
     };
+
+    const addNewCardToDB = async () => {
+        const email = await auth.currentUser.email
+        addNewCard({
+            user: email,
+            category: category,
+            card: newCard
+        })
+    }
 
     return (
         <Card sx={{ width: { xs: '80vw', md: '50vw' } }}>
@@ -152,15 +183,7 @@ function AddFlashcardForm({category}) {
             </CardActions>
 
             <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleClose}>
-                {
-                validCard? <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
-                This is a success message!
-                </Alert>
-                :
-                <Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}>
-                Text cannot be empty!
-                </Alert>
-                }
+                {alertBar}
             </Snackbar>
 
         </Card>

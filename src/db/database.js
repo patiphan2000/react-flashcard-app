@@ -72,6 +72,31 @@ export function updateFlashcard() {
     })
 }
 
+export async function addNewCard(newcardInfo) {
+    const response = await request.get('/flashcard.json')
+    const data = response.data
+    for (var user in data.users) {
+        if (data.users[user].email === newcardInfo.user){
+            for (var cat in data.users[user].category) {
+                if (data.users[user].category[cat].name == newcardInfo.category) {
+                    // push new card
+                    data.users[user].category[cat].flashcards.push(newcardInfo.card)
+                    console.log(data.users[user].category[cat].flashcards);
+                    console.log('card added!');
+                    const newData = {
+                        users: data.users
+                    }
+                    await request.patch('/flashcard.json', newData).then(response => {
+                        console.log(response);
+                    })
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
+}
+
 export async function compareFlashcard() {
     console.log('compare!!');
     const response = await request.get('/flashcard.json')
