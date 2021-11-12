@@ -258,7 +258,7 @@ export default function FlashcardTable({flashcards}) {
     }, [flashcards])
 
     return (
-    <Box sx={{ width: "60vw" }}>
+    <Box sx={{ width: { xs: '80vw', md: '60vw' } }}>
       <Paper sx={{ width: '100%', mb: 2 }}>
         <EnhancedTableToolbar numSelected={selected.length} />
         <TableContainer sx={{ overflowX: 'auto' }}>
