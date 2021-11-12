@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { app } from '../firebase'
 import { getAuth } from "firebase/auth";
 import { getCategory, compareFlashcard, updateFlashcard } from '../db/database'
 
 import FlashcardTable from './FlashcardTable';
 import AddButton from './AddButton';
+import AddFlashcardForm from './AddFlashcardForm';
 
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
@@ -14,16 +15,30 @@ import { Card, CardContent, CardActionArea } from '@mui/material';
 import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Collapse from '@mui/material/Collapse';
+import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 
 
 const auth = getAuth(app);
 
 function ManagePage (){
 
-    const [selectedCategory, setselectedCategory] = useState("")
+    const containerRef = React.useRef(null);
+
+    const [selectedCategory, setSelectedCategory] = useState("")
     const [categorys, setCategorys] = useState([]);
     const [flashcardList, setFlashcardList] = useState([])
-    const [result, setResult] = useState(false)
+    const [drawer, setDrawer] = useState(false)
+
+    const toggleDrawer = (open) => (event) => {
+        if (
+          event &&
+          event.type === 'keydown' &&
+          (event.key === 'Tab' || event.key === 'Shift')
+        ) {
+          return;
+        }
+        setDrawer(open);
+    };
 
     const fetchData = async () => {
         if (await auth.currentUser != null) {
@@ -49,9 +64,16 @@ function ManagePage (){
         if (selectedCategory != "") {
             result = true
         }
-        setTimeout(function() {
-        }, 100);
         return result
+    }
+
+    const changeSelectedCategory = (name) => {
+        if (selectedCategory == name) {
+            setSelectedCategory("")
+            return;
+        }
+        setSelectedCategory(name)
+
     }
 
     useEffect(() => {
@@ -72,8 +94,8 @@ function ManagePage (){
                         spacing={2}>
                         {categorys.map((cat, index) => {
                             return (
-                                <Card key={index} sx={{ maxWidth: 400 }}>
-                                    <CardActionArea onClick={()=>{(selectedCategory=="")? setselectedCategory(cat.name):setselectedCategory("")}}>
+                                <Card key={index} sx={{ minWidth: 150, maxWidth: 400 }}>
+                                    <CardActionArea onClick={()=>{changeSelectedCategory(cat.name)}}>
                                         <CardMedia
                                         component="img"
                                         height="100"
@@ -90,20 +112,31 @@ function ManagePage (){
                                 )})}
                     </Stack>
                 </Grid>
-                <Grid item xs={12} sx={{marginTop: "2rem"}}>
-                    <Collapse in={openTable()}>
+                <Grid item xs={12} sx={{marginTop: "2rem"}} ref={containerRef}>
+                    <Collapse in={()=>{openTable()}} container={containerRef.current}>
                         <FlashcardTable flashcards={flashcardList}></FlashcardTable>     
                     </Collapse>
                 </Grid>
                 { selectedCategory!=""?  
                 <Grid item xs={12}>
-                    <AddButton clickHandler={async ()=>{
-                        const bb = await compareFlashcard();
-                        setResult(bb)}}/>
+                    <AddButton clickHandler={toggleDrawer(true)}/>
                 </Grid>
                 : ""}
-                <Card sx={{ backgroundColor: result? "green":"red" }}>compare result</Card>
-                <Button onClick={updateFlashcard}>update</Button>
+                <SwipeableDrawer
+                    anchor='bottom'
+                    open={drawer}
+                    onClose={toggleDrawer(false)}
+                    onOpen={toggleDrawer(true)}
+                >
+                    <Grid container
+                    spacing={0}
+                    direction="column"
+                    alignItems="center"
+                    justifyContent="center"
+                    sx={{ marginTop: "50px", marginBottom: "50px" }}>
+                        <AddFlashcardForm/>
+                    </Grid>
+                </SwipeableDrawer>
             </Grid>
     )
 }
