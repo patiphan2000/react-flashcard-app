@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { app } from '../firebase'
 import { getAuth } from "firebase/auth";
 import { useParams } from "react-router-dom";
-import { getCategory, updateFlashcard } from '../db/database'
+import { getCategory } from '../db/database'
 
 import Typography from '@mui/material/Typography';
 import Flashcard from './Flashcard';
@@ -41,6 +41,14 @@ function FlashcardPage () {
         for (var fc in categorys) {
             if (categorys[fc].name === categoryName) {
                 // console.log(categorys[fc].flashcards);
+                if (!categorys[fc].flashcards) {
+                    setFlashcardList([{
+                        front: { text: 'No card here', subText: '' },
+                        back: { text: 'No card here', subText: '' },
+                    }])
+                    indexNum = 1
+                    return;
+                }
                 setFlashcardList(categorys[fc].flashcards)
                 indexNum = categorys[fc].flashcards.length
             }

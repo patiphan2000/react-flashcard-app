@@ -66,7 +66,7 @@ function Navbar({ authState, setAuthState }) {
     );
 
     return (
-        <Box sx={{ flexGrow: 1 }}>
+        <Box sx={{ flexGrow: 1, margin: 0.5 }}>
           <AppBar position="static">
             <Toolbar>
               <IconButton

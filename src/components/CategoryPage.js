@@ -41,7 +41,7 @@ function CategoryPage ({}) {
                     return (
                         <Grid key={index} item xs={12} sm={6}>
                             <Card sx={{ maxWidth: 400 }}>
-                                <CardActionArea component={Link} to={"/category/" + cat.name}>
+                                <CardActionArea component={Link} to={"/category/"+cat.name}>
                                     <CardMedia
                                     component="img"
                                     height="140"

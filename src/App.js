@@ -19,10 +19,22 @@ import './App.css'
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
 
 const auth = getAuth(app);
 
-function App (){
+function App () {
+
+  const theme = React.useMemo(
+    () =>
+      createTheme({
+        palette: {
+          mode: 'light',
+        },
+      }),
+    [],
+  );
 
   const [authState, setAuthState] = useState({
     email: '',
@@ -47,6 +59,8 @@ function App (){
 
   return (
     <div className="App">
+      <ThemeProvider theme={theme}>
+      <CssBaseline />
       <Router>
 
         <Navbar authState={authState} setAuthState={setAuthState}/>
@@ -87,6 +101,7 @@ function App (){
           </Grid> 
         </Container>
       </Router>
+      </ThemeProvider>
     </div>
   )
 
