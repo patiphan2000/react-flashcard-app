@@ -1,5 +1,6 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
+
 import { alpha } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Table from '@mui/material/Table';
@@ -143,7 +144,7 @@ EnhancedTableHead.propTypes = {
 };
 
 const EnhancedTableToolbar = (props) => {
-  const { numSelected } = props;
+  const { numSelected, handleDelete } = props;
 
   return (
     <Toolbar
@@ -169,8 +170,8 @@ const EnhancedTableToolbar = (props) => {
 
       {numSelected > 0 ? (
         <Tooltip title="Delete">
-          <IconButton>
-            <DeleteIcon />
+          <IconButton onClick={handleDelete}>
+            <DeleteIcon/>
           </IconButton>
         </Tooltip>
       ) : (
@@ -189,7 +190,7 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export default function FlashcardTable({flashcards}) {
+export default function FlashcardTable({flashcards, handleDelete}) {
 
     const [rows, setRows] = React.useState([0]);
     const [order, setOrder] = React.useState('asc');
@@ -234,6 +235,16 @@ export default function FlashcardTable({flashcards}) {
     setSelected(newSelected);
     };
 
+    // delete selected flashcard from DB
+    const deleteFlashcardFromDB = async () => {
+      var selectedFlashcards = []
+      for (var index in selected) {
+        selectedFlashcards.push(flashcards[selected[index]])
+      }
+      const status = await handleDelete(selectedFlashcards)
+      setSelected([])
+    }
+
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
     };
@@ -260,7 +271,7 @@ export default function FlashcardTable({flashcards}) {
     return (
     <Box sx={{ width: { xs: '80vw', md: '60vw' } }}>
       <Paper sx={{ width: '100%', mb: 2 }}>
-        <EnhancedTableToolbar numSelected={selected.length} />
+        <EnhancedTableToolbar numSelected={selected.length} handleDelete={deleteFlashcardFromDB} />
         <TableContainer sx={{ overflowX: 'auto' }}>
           <Table
             sx={{ minWidth: 750 }}

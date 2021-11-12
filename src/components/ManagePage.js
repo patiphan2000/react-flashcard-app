@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { app } from '../firebase'
 import { getAuth } from "firebase/auth";
-import { getCategory, compareFlashcard, updateFlashcard } from '../db/database'
+import { getCategory, deleteCard } from '../db/database'
 
 import FlashcardTable from './FlashcardTable';
 import AddButton from './AddButton';
@@ -13,16 +13,12 @@ import Divider from '@mui/material/Divider';
 import Stack from '@mui/material/Stack';
 import { Card, CardContent, CardActionArea } from '@mui/material';
 import CardMedia from '@mui/material/CardMedia';
-import Button from '@mui/material/Button';
-import Collapse from '@mui/material/Collapse';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 
 
 const auth = getAuth(app);
 
 function ManagePage (){
-
-    const containerRef = React.useRef(null);
 
     const [selectedCategory, setSelectedCategory] = useState("")
     const [categorys, setCategorys] = useState([]);
@@ -51,20 +47,16 @@ function ManagePage (){
             else {
                 for (var fc in categorys) {
                     if (categorys[fc].name == selectedCategory) {
+                        if (!categorys[fc].flashcards) {
+                            setFlashcardList([])
+                            return;
+                        }
                         setFlashcardList(categorys[fc].flashcards)
                         return;
                     }
                 }
             }
         }
-    }
-
-    const openTable = () => {
-        var result = false
-        if (selectedCategory != "") {
-            result = true
-        }
-        return result
     }
 
     const changeSelectedCategory = (name) => {
@@ -76,9 +68,19 @@ function ManagePage (){
 
     }
 
+    const deleteFlashcardFromDB = async (flashcards) => {
+        const email = auth.currentUser.email
+        const result = await deleteCard({
+            user: email,
+            category: selectedCategory,
+            flashcards: flashcards
+        })
+        return result;
+    }
+
     useEffect(() => {
         fetchData()
-    }, [selectedCategory]);
+    }, [selectedCategory, flashcardList]);
 
     return (
             <Grid container
@@ -112,10 +114,8 @@ function ManagePage (){
                                 )})}
                     </Stack>
                 </Grid>
-                <Grid item xs={12} sx={{marginTop: "2rem"}} ref={containerRef}>
-                    <Collapse in={()=>{openTable()}} container={containerRef.current}>
-                        <FlashcardTable flashcards={flashcardList}></FlashcardTable>     
-                    </Collapse>
+                <Grid item xs={12} sx={{marginTop: "2rem"}}>
+                    <FlashcardTable flashcards={flashcardList} handleDelete={deleteFlashcardFromDB} ></FlashcardTable>     
                 </Grid>
                 { selectedCategory!=""?  
                 <Grid item xs={12}>

@@ -21,15 +21,6 @@ import MuiAlert from '@mui/material/Alert';
 
 const auth = getAuth(app);
 
-const bull = (
-    <Box
-      component="span"
-      sx={{ display: 'inline-block', mx: '2px', transform: 'scale(0.8)' }}
-    >
-      •
-    </Box>
-  );
-
 const Alert = React.forwardRef(function Alert(props, ref) {
 return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
@@ -46,7 +37,6 @@ function AddFlashcardForm({category}) {
             subText: ''
         }
     })
-    const [validCard, setValidCard] = useState(false)
     const [openSnackbar, setOpenSnackbar] = useState(false)
     const [alertBar, setAlertBar] = useState()
 

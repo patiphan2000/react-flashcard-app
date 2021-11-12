@@ -78,7 +78,10 @@ export async function addNewCard(newcardInfo) {
     for (var user in data.users) {
         if (data.users[user].email === newcardInfo.user){
             for (var cat in data.users[user].category) {
-                if (data.users[user].category[cat].name == newcardInfo.category) {
+                if (data.users[user].category[cat].name === newcardInfo.category) {
+                    if (!data.users[user].category[cat].flashcards) {
+                        data.users[user].category[cat].flashcards = []
+                    }
                     // push new card
                     data.users[user].category[cat].flashcards.push(newcardInfo.card)
                     console.log(data.users[user].category[cat].flashcards);
@@ -86,10 +89,69 @@ export async function addNewCard(newcardInfo) {
                     const newData = {
                         users: data.users
                     }
-                    await request.patch('/flashcard.json', newData).then(response => {
-                        console.log(response);
-                    })
-                    return true;
+                    try {
+                        await request.patch('/flashcard.json', newData).then(response => {
+                            console.log(response);
+                            return true;
+                        })
+                    } catch (error) {
+                        // const err = error as AxiosError
+                        // if (err.response) {
+                        //    console.log(err.response.status)
+                        //    console.log(err.response.data)
+                        // }
+                        // this.handleAxiosError(error)
+                        return false
+                    }
+                }
+            }
+        }
+    }
+    return false;
+}
+
+export async function deleteCard(newcardInfoList) {
+
+    const checkInclude = (ele) => {
+        const result = newcardInfoList.flashcards.find(n => n.front.text === ele.front.text)
+        if (result) {
+            return true
+        }
+        return false
+    }
+
+    const response = await request.get('/flashcard.json')
+    const data = response.data
+    for (var user in data.users) {
+        if (data.users[user].email === newcardInfoList.user){
+            for (var cat in data.users[user].category) {
+                if (data.users[user].category[cat].name === newcardInfoList.category) {
+                    // delete card here
+
+                    const filterList = data.users[user].category[cat].flashcards.filter(
+                        ele => !checkInclude(ele))
+
+                    console.log(filterList);
+                    
+                    data.users[user].category[cat].flashcards = filterList
+
+                    const newData = {
+                        users: data.users
+                    }
+                    try {
+                        await request.patch('/flashcard.json', newData).then(response => {
+                            console.log(response);
+                            return true;
+                        })
+                    } catch (error) {
+                        // const err = error as AxiosError
+                        // if (err.response) {
+                        //    console.log(err.response.status)
+                        //    console.log(err.response.data)
+                        // }
+                        // this.handleAxiosError(error)
+                        return false
+                    }
                 }
             }
         }
