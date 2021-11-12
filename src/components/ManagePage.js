@@ -95,10 +95,11 @@ function ManagePage (){
                     <Stack
                         direction="row"
                         divider={<Divider orientation="vertical" flexItem />}
-                        spacing={2}>
+                        spacing={2}
+                        sx={{ height: 85, maxWidth: '90vw', overflowX: 'auto' }}>
                         {categorys.map((cat, index) => {
                             return (
-                                <Card key={index} sx={{ minWidth: 150, maxWidth: 400 }}>
+                                <Card key={index} sx={{ height: 80, minWidth: 150, maxWidth: 400 }}>
                                     <CardActionArea onClick={()=>{changeSelectedCategory(cat.name)}}>
                                         <CardMedia
                                         component="img"
