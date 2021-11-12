@@ -12,6 +12,8 @@ import Divider from '@mui/material/Divider';
 import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 import InfoIcon from '@mui/icons-material/Info';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
 
 
 const bull = (
@@ -22,6 +24,10 @@ const bull = (
       •
     </Box>
   );
+
+const Alert = React.forwardRef(function Alert(props, ref) {
+return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 function AddFlashcardForm({category}) {
 
@@ -35,6 +41,8 @@ function AddFlashcardForm({category}) {
             subText: ''
         }
     })
+    const [validCard, setValidCard] = useState(false)
+    const [openSnackbar, setOpenSnackbar] = useState(false)
 
     const textChangeHandler = (e) => {
         const {name, value} = e.target
@@ -43,6 +51,26 @@ function AddFlashcardForm({category}) {
         card[side][type] = value
         setNewcard(card)
     }
+
+    const submitNewCard = () => {
+        if (newCard.front.text.replace(/\s/g,"") != "" 
+            &&
+        newCard.back.text.replace(/\s/g,"") != "") {
+            setValidCard(true)
+            setOpenSnackbar(true)
+            return;
+        }
+        setValidCard(false)
+        setOpenSnackbar(true)
+    }
+
+    const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+        return;
+    }
+
+    setOpenSnackbar(false);
+    };
 
     return (
         <Card sx={{ width: { xs: '80vw', md: '50vw' } }}>
@@ -120,8 +148,21 @@ function AddFlashcardForm({category}) {
                 </Grid>
             </CardContent>
             <CardActions>
-            <Button size="small" color="success" onClick={()=>{console.log(newCard);}}>Add new card</Button>
+            <Button size="small" color="success" onClick={submitNewCard}>Add new card</Button>
             </CardActions>
+
+            <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleClose}>
+                {
+                validCard? <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+                This is a success message!
+                </Alert>
+                :
+                <Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}>
+                Text cannot be empty!
+                </Alert>
+                }
+            </Snackbar>
+
         </Card>
     )
 }
