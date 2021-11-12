@@ -134,7 +134,7 @@ function ManagePage (){
                     alignItems="center"
                     justifyContent="center"
                     sx={{ marginTop: "50px", marginBottom: "50px" }}>
-                        <AddFlashcardForm/>
+                        <AddFlashcardForm category={selectedCategory}/>
                     </Grid>
                 </SwipeableDrawer>
             </Grid>

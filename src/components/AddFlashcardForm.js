@@ -23,7 +23,7 @@ const bull = (
     </Box>
   );
 
-function AddFlashcardForm() {
+function AddFlashcardForm({category}) {
 
     const [newCard, setNewcard] = useState({
         front: {
@@ -47,8 +47,11 @@ function AddFlashcardForm() {
     return (
         <Card sx={{ width: { xs: '80vw', md: '50vw' } }}>
             <CardContent>
+                <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+                Add new flashcard to
+                </Typography>
                 <Typography variant="h4" component="div" sx={{marginBottom: '10px'}}>
-                    New flashcard
+                    {category} category
                 </Typography>
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
