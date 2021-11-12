@@ -6,6 +6,7 @@ import { getCategory, deleteCard } from '../db/database'
 import FlashcardTable from './FlashcardTable';
 import AddButton from './AddButton';
 import AddFlashcardForm from './AddFlashcardForm';
+import AddCategoryForm from './AddCategoryForm';
 
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
@@ -25,9 +26,10 @@ function ManagePage (){
     const [selectedCategory, setSelectedCategory] = useState("")
     const [categorys, setCategorys] = useState([]);
     const [flashcardList, setFlashcardList] = useState([])
-    const [addDrawer, setAddDrawer] = useState(false)
+    const [addCardDrawer, setAddCardDrawer] = useState(false)
+    const [addCategoryDrawer, setAddCategoryDrawer] = useState(false)
 
-    const toggleAddDrawer = (open) => (event) => {
+    const toggleAddCardDrawer = (open) => (event) => {
         if (
           event &&
           event.type === 'keydown' &&
@@ -35,7 +37,18 @@ function ManagePage (){
         ) {
           return;
         }
-        setAddDrawer(open);
+        setAddCardDrawer(open);
+    };
+
+    const toggleAddCategoryDrawer = (open) => (event) => {
+        if (
+          event &&
+          event.type === 'keydown' &&
+          (event.key === 'Tab' || event.key === 'Shift')
+        ) {
+          return;
+        }
+        setAddCategoryDrawer(open);
     };
 
     const fetchData = async () => {
@@ -115,7 +128,7 @@ function ManagePage (){
                                     </CardActionArea>
                                 </Card>
                                 )})}
-                        <IconButton aria-label="addCategory" size="large">
+                        <IconButton aria-label="addCategory" size="large" onClick={toggleAddCategoryDrawer(true)}>
                             <AddIcon fontSize="inherit" />
                         </IconButton>
                     </Stack>
@@ -125,14 +138,14 @@ function ManagePage (){
                 </Grid>
                 { selectedCategory!=""?  
                 <Grid item xs={12}>
-                    <AddButton clickHandler={toggleAddDrawer(true)}/>
+                    <AddButton clickHandler={toggleAddCardDrawer(true)}/>
                 </Grid>
                 : ""}
                 <SwipeableDrawer
                     anchor='bottom'
-                    open={addDrawer}
-                    onClose={toggleAddDrawer(false)}
-                    onOpen={toggleAddDrawer(true)}
+                    open={addCardDrawer}
+                    onClose={toggleAddCardDrawer(false)}
+                    onOpen={toggleAddCardDrawer(true)}
                 >
                     <Grid container
                     spacing={0}
@@ -141,6 +154,22 @@ function ManagePage (){
                     justifyContent="center"
                     sx={{ marginTop: "50px", marginBottom: "50px" }}>
                         <AddFlashcardForm category={selectedCategory}/>
+                    </Grid>
+                </SwipeableDrawer>
+
+                <SwipeableDrawer
+                    anchor='bottom'
+                    open={addCategoryDrawer}
+                    onClose={toggleAddCategoryDrawer(false)}
+                    onOpen={toggleAddCategoryDrawer(true)}
+                >
+                    <Grid container
+                    spacing={0}
+                    direction="column"
+                    alignItems="center"
+                    justifyContent="center"
+                    sx={{ marginTop: "50px", marginBottom: "50px" }}>
+                        <AddCategoryForm/>
                     </Grid>
                 </SwipeableDrawer>
                 

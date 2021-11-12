@@ -108,7 +108,7 @@ function AddFlashcardForm({category}) {
                         id="frontText"
                         label="Front text"
                         type="text"
-                        fullWidth='true'
+                        fullWidth={true}
                         name='front-text'
                         onChange={textChangeHandler}
                         />
@@ -140,7 +140,7 @@ function AddFlashcardForm({category}) {
                         id="backText"
                         label="Back text"
                         type="text"
-                        fullWidth='true'
+                        fullWidth={true}
                         name='back-text'
                         onChange={textChangeHandler}
                         />

@@ -1,7 +1,13 @@
 import axios from 'axios'
+import { createApi, toJson } from 'unsplash-js';
 import * as sample from './sample.json'
 
 const request = axios.create({ baseURL: process.env.REACT_APP_DATABASE_END_POINT })
+
+const unsplash = createApi ({
+    applicationId: process.env.REACT_APP_UNPLASH_APP_ACCESS_KEY,
+    // secret: process.env.REACT_APP_UNPLASH_APP_SECRET
+});
 
 const data = {
     users: [
@@ -157,6 +163,16 @@ export async function deleteCard(newcardInfoList) {
         }
     }
     return false;
+}
+
+export async function getPhoto(keyword) {
+    const url = "https://api.unsplash.com/search/photos?page=1&per_page=6&query="
+    const client = "&client_id=" + process.env.REACT_APP_UNPLASH_APP_ACCESS_KEY
+    var photos;
+    await axios.get(url + keyword + client).then(response => {
+        photos = response.data.results  
+    })
+    return photos
 }
 
 export async function compareFlashcard() {
