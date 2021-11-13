@@ -6,32 +6,35 @@ import {
   Routes,
 } from "react-router-dom";
 import { app } from './firebase'
-import { getAuth, signOut } from "firebase/auth";
+import { getAuth } from "firebase/auth";
 
 import LoginForm from './components/LoginForm'
-import PrivateRoute from './components/PrivateRoute';
 import FlashcardPage from './components/FlashcardPage';
 import CategoryPage from './components/CategoryPage';
+import Navbar from './components/Navbar'
+import ManagePage from './components/ManagePage'
 import './App.css'
 
-import AppBar from '@mui/material/AppBar';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
-
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import AccountCircle from '@mui/icons-material/AccountCircle';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
 
 const auth = getAuth(app);
 
-function App (){
+function App () {
 
-  const [anchorEl, setAnchorEl] = useState(null);
+  const theme = React.useMemo(
+    () =>
+      createTheme({
+        palette: {
+          mode: 'light',
+        },
+      }),
+    [],
+  );
+
   const [authState, setAuthState] = useState({
     email: '',
     password: '',
@@ -39,46 +42,6 @@ function App (){
     message: '',
     showPassword: false,
   });
-
-  const isMenuOpen = Boolean(anchorEl);
-
-  const logout = async (e) => {
-    e.preventDefault()
-    await signOut(auth).then(response => {
-      setAuthState({
-        currentUser: null
-      })
-    })
-  }
-
-  const handleProfileMenuOpen = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-  };
-
-  const menuId = 'primary-search-account-menu';
-  const renderMenu = (
-    <Menu
-      anchorEl={anchorEl}
-      anchorOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
-      }}
-      id={menuId}
-      keepMounted
-      transformOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
-      }}
-      open={isMenuOpen}
-      onClose={handleMenuClose}
-    >
-      <MenuItem onClick={logout}>Logout</MenuItem>
-    </Menu>
-  );
 
   useEffect(() => {
     auth.onAuthStateChanged(function(user) {
@@ -93,43 +56,15 @@ function App (){
     });
   }, []);
 
-  const user = authState.currentUser
-
   return (
     <div className="App">
+      <ThemeProvider theme={theme}>
+      <CssBaseline />
       <Router>
 
-        <Box sx={{ flexGrow: 1 }}>
-          <AppBar position="static">
-            <Toolbar>
-              <Typography 
-              variant="h3" 
-              component="div" 
-              sx={{ flexGrow: 2 }}>
-                FlashCard
-              </Typography>
-              {
-                user != null?
-                <IconButton
-                  size="large"
-                  edge="end"
-                  aria-label="account of current user"
-                  aria-controls={menuId}
-                  aria-haspopup="true"
-                  onClick={handleProfileMenuOpen}
-                  color="inherit"
-                >
-                  <AccountCircle />
-                </IconButton>
-                :
-                <Button component={Link} to="/login" color="inherit">Login</Button>
-              }
-            </Toolbar>
-          </AppBar>
-          {renderMenu}
-        </Box>
+        <Navbar authState={authState} setAuthState={setAuthState}/>
         
-        <Container maxWidth="sm">
+        <Container>
           <Grid
             container
             spacing={0}
@@ -141,24 +76,25 @@ function App (){
               <Route path="/" element={ <div>
                 <h1>Welcome to Flashcard app</h1>
                 <Button component={Link} to="/category">flashcard</Button>
+                <Button component={Link} to="/manage">manage</Button>
               </div> }/>
               <Route path="/login" element={
-                  <LoginForm authState={authState} setAuthState={setAuthState}/>
+                <LoginForm authState={authState} setAuthState={setAuthState}/>
               } />
               <Route path="/category" element={
-                <PrivateRoute>
-                  <CategoryPage/>
-                </PrivateRoute>
+                <CategoryPage/>
               } />
               <Route path="/category/:categoryName" element={
-                <PrivateRoute>
-                  <FlashcardPage authState={authState}/>
-                </PrivateRoute>
+                <FlashcardPage authState={authState}/>
+              } />
+              <Route path="/manage" element={
+                <ManagePage/>
               } />
             </Routes>
           </Grid> 
         </Container>
       </Router>
+      </ThemeProvider>
     </div>
   )
 

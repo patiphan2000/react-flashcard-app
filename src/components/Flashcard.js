@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useImperativeHandle } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import './Flashcard.css'
 
 import Typography from '@mui/material/Typography';
@@ -23,7 +23,6 @@ function Flashcard({ flashcard, flip, setFlip }) {
 
     useEffect(() => {
         setMaxHeight()
-        setFlip(false)
     }, [flashcard.text, flashcard.subText])
 
     return (

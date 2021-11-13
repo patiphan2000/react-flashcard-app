@@ -1,17 +1,17 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 import { app } from '../firebase'
 import { getAuth } from "firebase/auth";
-import './FlashcardPage.css'
-import { useParams } from "react-router-dom";
-import { getCategory, updateFlashcard } from '../db/database'
+import { useParams, useNavigate } from "react-router-dom";
+import { getCategory } from '../db/database'
 
 import Typography from '@mui/material/Typography';
 import Flashcard from './Flashcard';
+import AddButton from './AddButton';
 
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
-import AddIcon from '@mui/icons-material/Add';
+
 
 const auth = getAuth(app)
 
@@ -30,9 +30,10 @@ var indexNum = 0;
 
 function FlashcardPage () {
 
+    const navigate = useNavigate()
+
     const { categoryName } = useParams()
 
-    const [hoverAdd, setHoverAdd] = useState(false)
     const [flashcardList, setFlashcardList] = useState([card])
     const [cardNum, setCardNum] = useState(0)
     const [flip, setFlip] = useState(false)
@@ -42,6 +43,14 @@ function FlashcardPage () {
         for (var fc in categorys) {
             if (categorys[fc].name === categoryName) {
                 // console.log(categorys[fc].flashcards);
+                if (!categorys[fc].flashcards) {
+                    setFlashcardList([{
+                        front: { text: 'No card here', subText: '' },
+                        back: { text: 'No card here', subText: '' },
+                    }])
+                    indexNum = 1
+                    return;
+                }
                 setFlashcardList(categorys[fc].flashcards)
                 indexNum = categorys[fc].flashcards.length
             }
@@ -49,9 +58,11 @@ function FlashcardPage () {
     }
 
     useEffect(() => {
-        if (auth.currentUser != null) {
-          fetchData()
+        if (auth.currentUser == null) {
+            navigate('/login')
+            return;
         }
+        fetchData()
       }, []);
 
     return (
@@ -77,7 +88,15 @@ function FlashcardPage () {
                     }}
                     onClick={()=>{
                         var num = Math.floor(Math.random() * indexNum)
-                        while (cardNum === num) { num = Math.floor(Math.random() * indexNum) }
+                        var keepCalling = 0;
+                        while (cardNum === num) { 
+                            num = Math.floor(Math.random() * indexNum)
+                            keepCalling++;
+                            if (keepCalling > 100) {
+                                fetchData()
+                                break
+                            }
+                        }
                         setFlip(false)
                         setTimeout(function() {
                             setCardNum(num)
@@ -88,12 +107,7 @@ function FlashcardPage () {
                     </Button>
                 </Grid>
                 <Grid item xs={12}>
-                    <Button className="addButton" variant="contained" endIcon={<AddIcon sx={{marginLeft:hoverAdd? '0': '-12px'}}/>} color="success" 
-                    onMouseOver={() => {setHoverAdd(true)}}
-                    onMouseOut={() => {setHoverAdd(false)}}
-                    onClick={updateFlashcard}>
-                        {hoverAdd? 'add': null}
-                    </Button>
+                    <AddButton/>
                 </Grid>
             </Grid>
         </Grid>
