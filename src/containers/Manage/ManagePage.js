@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react'
-import { app } from '../firebase'
+import { app } from '../../firebase'
 import { getAuth } from "firebase/auth";
-import { getCategory, deleteCard, deleteCategory } from '../db/database'
+import { getCategory, deleteCard, deleteCategory } from '../../db/database'
 import { useNavigate } from "react-router-dom";
 
-import FlashcardTable from './FlashcardTable';
-import AddButton from './AddButton';
-import AddFlashcardForm from './AddFlashcardForm';
-import AddCategoryForm from './AddCategoryForm';
-import CategoryBox from './CategoryBox';
+import FlashcardTable from '../../components/FlashcardTable';
+import AddButton from '../../components/AddButton';
+import AddFlashcardForm from '../../components/AddFlashcardForm';
+import AddCategoryForm from '../../components/AddCategoryForm';
+import CategoryBox from '../../components/CategoryBox';
 
 import Grid from '@mui/material/Grid';
 import Divider from '@mui/material/Divider';
