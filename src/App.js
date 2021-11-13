@@ -9,11 +9,10 @@ import { app } from './firebase'
 import { getAuth } from "firebase/auth";
 
 import LoginForm from './components/LoginForm'
-import PrivateRoute from './components/PrivateRoute';
 import FlashcardPage from './components/FlashcardPage';
 import CategoryPage from './components/CategoryPage';
 import Navbar from './components/Navbar'
-import ManageRouter from './components/ManageRouter';
+import ManagePage from './components/ManagePage'
 import './App.css'
 
 import Container from '@mui/material/Container';
@@ -74,28 +73,22 @@ function App () {
             style={{ minHeight: '100vh' }}
           >
             <Routes>
-              <Route exact path="/" element={ <div>
+              <Route path="/" element={ <div>
                 <h1>Welcome to Flashcard app</h1>
                 <Button component={Link} to="/category">flashcard</Button>
                 <Button component={Link} to="/manage">manage</Button>
               </div> }/>
-              <Route exact path="/login" element={
-                  <LoginForm authState={authState} setAuthState={setAuthState}/>
+              <Route path="/login" element={
+                <LoginForm authState={authState} setAuthState={setAuthState}/>
               } />
-              <Route exact path="/category" element={
-                <PrivateRoute>
-                  <CategoryPage/>
-                </PrivateRoute>
+              <Route path="/category" element={
+                <CategoryPage/>
               } />
-              <Route exact path="/category/:categoryName" element={
-                <PrivateRoute>
-                  <FlashcardPage authState={authState}/>
-                </PrivateRoute>
+              <Route path="/category/:categoryName" element={
+                <FlashcardPage authState={authState}/>
               } />
-              <Route exact path="/manage" element={
-                <PrivateRoute>
-                  <ManageRouter/>
-                </PrivateRoute>
+              <Route path="/manage" element={
+                <ManagePage/>
               } />
             </Routes>
           </Grid> 

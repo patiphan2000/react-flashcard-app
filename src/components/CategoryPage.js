@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { app } from '../firebase'
 import { getAuth } from "firebase/auth";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { getCategory } from '../db/database'
 
 import Card from '@mui/material/Card';
@@ -15,13 +15,17 @@ const auth = getAuth(app);
 
 function CategoryPage ({}) {
 
+    const navigate = useNavigate();
+
     const [categorys, setCategorys] = useState([]);
 
     const fetchData = async () => {
-        if (await auth.currentUser != null) {
-            const cc = await getCategory(auth.currentUser.email);
-            setCategorys(cc)
+        if (auth.currentUser == null) {
+            navigate('/login')
+            return;
         }
+        const cc = await getCategory(auth.currentUser.email);
+        setCategorys(cc)
     }
 
     useEffect(() => {

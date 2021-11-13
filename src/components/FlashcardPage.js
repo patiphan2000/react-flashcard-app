@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { app } from '../firebase'
 import { getAuth } from "firebase/auth";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { getCategory } from '../db/database'
 
 import Typography from '@mui/material/Typography';
@@ -30,6 +30,8 @@ var indexNum = 0;
 
 function FlashcardPage () {
 
+    const navigate = useNavigate()
+
     const { categoryName } = useParams()
 
     const [flashcardList, setFlashcardList] = useState([card])
@@ -56,9 +58,11 @@ function FlashcardPage () {
     }
 
     useEffect(() => {
-        if (auth.currentUser != null) {
-          fetchData()
+        if (auth.currentUser == null) {
+            navigate('/login')
+            return;
         }
+        fetchData()
       }, []);
 
     return (

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { app } from '../firebase'
 import { getAuth } from "firebase/auth";
 import { getCategory, deleteCard, deleteCategory } from '../db/database'
+import { useNavigate } from "react-router-dom";
 
 import FlashcardTable from './FlashcardTable';
 import AddButton from './AddButton';
@@ -22,11 +23,14 @@ import MuiAlert from '@mui/material/Alert';
 
 const auth = getAuth(app);
 
+
 const Alert = React.forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-    });
+});
 
 function ManagePage (){
+
+    const navigate = useNavigate()
 
     const [selectedCategory, setSelectedCategory] = useState("")
     const [categorys, setCategorys] = useState([]);
@@ -138,7 +142,12 @@ function ManagePage (){
                 }
             }
         }
-        
+
+        if (auth.currentUser == null) {
+            navigate('/login')
+            return;
+        }
+
         fetchData()
     }, [selectedCategory, flashcardList, trigger]);
 
