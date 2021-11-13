@@ -7,17 +7,15 @@ import FlashcardTable from './FlashcardTable';
 import AddButton from './AddButton';
 import AddFlashcardForm from './AddFlashcardForm';
 import AddCategoryForm from './AddCategoryForm';
+import CategoryBox from './CategoryBox';
 
 import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import Stack from '@mui/material/Stack';
-import { Card, CardContent, CardActionArea } from '@mui/material';
-import CardMedia from '@mui/material/CardMedia';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import AddIcon from '@mui/icons-material/Add';
 import IconButton from '@mui/material/IconButton';
-
+import CircularProgress from '@mui/material/CircularProgress';
 
 const auth = getAuth(app);
 
@@ -28,6 +26,8 @@ function ManagePage (){
     const [flashcardList, setFlashcardList] = useState([])
     const [addCardDrawer, setAddCardDrawer] = useState(false)
     const [addCategoryDrawer, setAddCategoryDrawer] = useState(false)
+
+    const [loading, setLoading] = useState(false)
 
     const toggleAddCardDrawer = (open) => (event) => {
         if (
@@ -57,6 +57,7 @@ function ManagePage (){
             setCategorys(cc)
             if (selectedCategory == "") {
                 setFlashcardList([])
+                setLoading(false);
                 return;
             }
             else {
@@ -67,6 +68,7 @@ function ManagePage (){
                             return;
                         }
                         setFlashcardList(categorys[fc].flashcards)
+                        setLoading(false);
                         return;
                     }
                 }
@@ -75,6 +77,7 @@ function ManagePage (){
     }
 
     const changeSelectedCategory = (name) => {
+        setLoading(true);
         if (selectedCategory == name) {
             setSelectedCategory("")
             return;
@@ -108,63 +111,29 @@ function ManagePage (){
                     <Stack
                         direction="row"
                         divider={<Divider orientation="vertical" flexItem />}
-                        spacing={2}
-                        sx={{ height: 110, maxWidth: '90vw', overflowX: 'auto' }}>
+                        spacing={1}
+                        sx={{ height: 110, maxWidth: '95vw', overflowX: 'auto' }}>
                         {categorys.map((cat, index) => {
-                            return (
-                                <Grid 
-                                container 
-                                direction="row"
-                                alignItems="center"
-                                justifyContent="center">
-                                    <Card 
-                                    key={index} 
-                                    sx={{ 
-                                        height: 80, 
-                                        minWidth: 150, 
-                                        maxWidth: 400,
-                                        transition: '0.2s ease',
-                                        boxShadow : (selectedCategory==cat.name)? '0 0 7px 1px #f0f, 0 0 10px 2px #0ff':'' }}>
-                                        <CardActionArea onClick={()=>{changeSelectedCategory(cat.name)}}>
-                                            <CardMedia
-                                            component="img"
-                                            height="100"
-                                            alt={cat.name}
-                                            image={cat.imageUrl}
-                                            sx={{ position: 'absolute' }}
-                                            />
-                                            <CardContent sx={{
-                                                position:'absolute',
-                                                color:'white',
-                                                alignItems: 'center',
-                                                textShadow : '1px 1px 10px #fff, 2px 2px 2px #212121'
-                                                }}>
-                                                <Typography gutterBottom variant="h5" component="div">
-                                                    {cat.name}
-                                                </Typography>
-                                            </CardContent>
-                                        </CardActionArea>
-                                    </Card>
-                                    <IconButton 
-                                    aria-label="addCategory" 
-                                    size="small"
-                                    sx={{
-                                        position:'absolute',
-                                        zIndex:(selectedCategory==cat.name)? 0:-2,
-                                        transition: '0.2s ease',
-                                        transform: (selectedCategory==cat.name)? 'translate(0px, 60px)':'translate(0px, 20px)'
-                                    }}>
-                                        <AddIcon fontSize="inherit" />
-                                    </IconButton>
-                                </Grid>
-                                )})}
+                            const gotSelected = selectedCategory==cat.name;
+                            return ( 
+                            <CategoryBox 
+                            key={index} 
+                            cat={cat} 
+                            selectedCategory={selectedCategory} 
+                            handleSelected={changeSelectedCategory}/> 
+                            )})}
                         <IconButton aria-label="addCategory" size="large" onClick={toggleAddCategoryDrawer(true)}>
                             <AddIcon fontSize="inherit" />
                         </IconButton>
                     </Stack>
                 </Grid>
                 <Grid item xs={12} sx={{marginTop: "2rem"}}>
-                    <FlashcardTable flashcards={flashcardList} handleDelete={deleteFlashcardFromDB} ></FlashcardTable>     
+                    {
+                        (loading)?
+                        <CircularProgress />
+                        :
+                        <FlashcardTable flashcards={flashcardList} handleDelete={deleteFlashcardFromDB} ></FlashcardTable>     
+                    }
                 </Grid>
                 { selectedCategory!=""?  
                 <Grid item xs={12}>
