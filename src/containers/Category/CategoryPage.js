@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import { app } from '../firebase'
+import { app } from '../../firebase'
 import { getAuth } from "firebase/auth";
 import { Link, useNavigate } from "react-router-dom";
-import { getCategory } from '../db/database'
+import { getCategory } from '../../db/database'
 
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';

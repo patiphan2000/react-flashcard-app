@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react'
-import { app } from '../firebase'
+import { app } from '../../firebase'
 import { getAuth } from "firebase/auth";
 import { useParams, useNavigate } from "react-router-dom";
-import { getCategory } from '../db/database'
+import { getCategory } from '../../db/database'
 
 import Typography from '@mui/material/Typography';
-import Flashcard from './Flashcard';
-import AddButton from './AddButton';
+import Flashcard from '../../components/Flashcard';
+import AddButton from '../../components/AddButton';
 
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';

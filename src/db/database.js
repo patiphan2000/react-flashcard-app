@@ -1,5 +1,4 @@
 import axios from 'axios'
-import * as sample from './sample.json'
 
 
 const request = axios.create({ baseURL: process.env.REACT_APP_DATABASE_END_POINT })
@@ -17,15 +16,6 @@ export async function getCategory(userEmail) {
         }
     }
     return []
-}
-
-export function updateFlashcard() {
-    const newData = {
-        users: sample.users
-    }
-    request.patch('/flashcard.json', newData).then(response => {
-        console.log(response);
-    })
 }
 
 export async function addNewCard(newcardInfo) {
@@ -164,14 +154,4 @@ export async function getPhoto(keyword) {
         photos = response.data.results  
     })
     return photos
-}
-
-export async function compareFlashcard() {
-    console.log('compare!!');
-    const response = await request.get('/flashcard.json')
-    const data = response.data
-    const result = (data.users === sample.users);
-    console.log(data.users);
-    console.log(sample.users);
-    return result
 }
