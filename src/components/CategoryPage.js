@@ -46,7 +46,8 @@ function CategoryPage ({}) {
                                         <CardMedia
                                         component="img"
                                         height="140"
-                                        alt="green iguana"
+                                        image={cat.imageUrl}
+                                        alt={cat.name}
                                         />
                                         <CardContent>
                                         <Typography gutterBottom variant="h5" component="div">

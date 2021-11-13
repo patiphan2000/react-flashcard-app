@@ -12,8 +12,11 @@ import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
+
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
+import ImageListItemBar from '@mui/material/ImageListItemBar';
+
 import CircularProgress from '@mui/material/CircularProgress';
 
 
@@ -26,6 +29,7 @@ return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 function AddCategoryForm() {
 
     const [newCategory, setNewCategory] = useState("")
+    const [newCoverPhoto, setNewCoverPhoto] = useState("")
     const [coverPhotos, setCoverPhotos] = useState([])
     const [photoChoice, setPhotoChoice] = useState(<></>)
 
@@ -69,8 +73,14 @@ function AddCategoryForm() {
         return;
     }
 
-    setOpenSnackbar(false);
-    };
+    
+        setOpenSnackbar(false);
+    };  
+
+    const handleSelectPhoto = (url) => {
+        console.log(url);
+        setNewCoverPhoto(url)
+    }
 
     const searchPhotos = async () => {
         setLoading(true)
@@ -87,20 +97,24 @@ function AddCategoryForm() {
     const updatePhotoChoice = () => {
         if (loading) {
             return (
-                <Grid container alignItems="center" justifyContent="center">
-                    <CircularProgress />
-                </Grid>
+                <CircularProgress />
             )
         }
         if (coverPhotos.length > 0) {
             return (
-                <ImageList sx={{ width: 500, height: 450 }} cols={3} rowHeight={164}>
+                <ImageList sx={{ width: {xs: 250, sm: 500}, height: 450 }} cols={3} rowHeight={164}>
                     {coverPhotos.map((item) => (
-                        <ImageListItem key={item.id} sx={{ height:50 }}>
+                        <ImageListItem key={item.id} onClick={()=>handleSelectPhoto(item.urls.regular)}>
                         <img
                             src={item.urls.regular}
                             alt={item.alt_describtion}
                             loading="lazy"
+                        />
+                        <ImageListItemBar
+                        title={(item.urls.regular==newCoverPhoto)? "selected":""}
+                        sx={{
+                            background: (item.urls.regular==newCoverPhoto)?'rgba(65, 169, 76, 0.6)':'rgba(65, 169, 76, 0.0)'
+                        }}
                         />
                         </ImageListItem>
                     ))}
@@ -136,7 +150,9 @@ function AddCategoryForm() {
                         <Button onClick={searchPhotos}>search image</Button>
                     </Grid>
                     <Grid item xs={12}>
-                    { updatePhotoChoice() }
+                        <Grid container alignItems="center" justifyContent="center">
+                            { updatePhotoChoice() }
+                        </Grid>
                     </Grid>
                 </Grid>
             </CardContent>
