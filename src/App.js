@@ -8,10 +8,10 @@ import {
 import { app } from './firebase'
 import { getAuth } from "firebase/auth";
 
-import LoginForm from './components/LoginForm'
+import LoginForm from './containers/Login/LoginForm'
 import FlashcardPage from './containers/Flashcard/FlashcardPage';
 import CategoryPage from './containers/Category/CategoryPage';
-import Navbar from './components/Navbar'
+import Navbar from './components/Layout/Navbar'
 import ManagePage from './containers/Manage/ManagePage'
 import './App.css'
 

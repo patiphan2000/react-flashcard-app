@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
 import { Link } from "react-router-dom";
-import { app } from '../firebase'
+import { app } from '../../firebase'
 import { getAuth, signOut } from "firebase/auth";
 
-import AppBar from '@mui/material/AppBar';
+import UseSwitchesCustom from '../UseSwitchCustom';
 
+import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
@@ -61,12 +62,15 @@ function Navbar({ authState, setAuthState }) {
         open={isMenuOpen}
         onClose={handleMenuClose}
         >
-        <MenuItem onClick={logout}>Logout</MenuItem>
+          <MenuItem>
+            <UseSwitchesCustom/>
+          </MenuItem>
+          <MenuItem onClick={logout}>Logout</MenuItem>
         </Menu>
     );
 
     return (
-        <Box sx={{ flexGrow: 1, margin: 0.5 }}>
+        <Box sx={{ flexGrow: 1 }}>
           <AppBar position="static">
             <Toolbar>
               <IconButton

@@ -28,7 +28,7 @@ function Flashcard({ flashcard, flip, setFlip }) {
     return (
         <div className={`flashcard ${flip? 'flip':''}`} style={{height: height}}>
             <div className="front" ref={frontEl}>
-                <Card>
+                <Card sx={{ backgroundColor: '#fff8e7' }}>
                     <CardContent>
                         <Typography className="text" variant="h5">{flashcard.front.text}</Typography>
                     </CardContent>
@@ -44,7 +44,7 @@ function Flashcard({ flashcard, flip, setFlip }) {
                 </Card>
                 </div>
             <div className="back" ref={backEl}>
-                <Card>
+                <Card sx={{ backgroundColor: '#fff8e7' }}>
                     <CardContent>
                         <Typography className="text" variant="h5">{flashcard.back.text}</Typography>
                     </CardContent>
