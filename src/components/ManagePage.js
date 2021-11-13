@@ -117,7 +117,14 @@ function ManagePage (){
                                 direction="row"
                                 alignItems="center"
                                 justifyContent="center">
-                                    <Card key={index} sx={{ height: 80, minWidth: 150, maxWidth: 400 }}>
+                                    <Card 
+                                    key={index} 
+                                    sx={{ 
+                                        height: 80, 
+                                        minWidth: 150, 
+                                        maxWidth: 400,
+                                        transition: '0.2s ease',
+                                        boxShadow : (selectedCategory==cat.name)? '0 0 7px 1px #f0f, 0 0 10px 2px #0ff':'' }}>
                                         <CardActionArea onClick={()=>{changeSelectedCategory(cat.name)}}>
                                             <CardMedia
                                             component="img"
@@ -138,12 +145,17 @@ function ManagePage (){
                                             </CardContent>
                                         </CardActionArea>
                                     </Card>
-                                    { selectedCategory==cat.name?
-                                        <IconButton aria-label="addCategory" size="small">
-                                            <AddIcon fontSize="inherit" />
-                                        </IconButton>
-                                        : <></>
-                                    }
+                                    <IconButton 
+                                    aria-label="addCategory" 
+                                    size="small"
+                                    sx={{
+                                        position:'absolute',
+                                        zIndex:(selectedCategory==cat.name)? 0:-2,
+                                        transition: '0.2s ease',
+                                        transform: (selectedCategory==cat.name)? 'translate(0px, 60px)':'translate(0px, 20px)'
+                                    }}>
+                                        <AddIcon fontSize="inherit" />
+                                    </IconButton>
                                 </Grid>
                                 )})}
                         <IconButton aria-label="addCategory" size="large" onClick={toggleAddCategoryDrawer(true)}>
