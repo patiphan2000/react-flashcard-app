@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 import { app } from '../firebase'
 import { getAuth } from "firebase/auth";
-import { getCategory, deleteCard } from '../db/database'
+import { getCategory, deleteCard, deleteCategory } from '../db/database'
 
 import FlashcardTable from './FlashcardTable';
 import AddButton from './AddButton';
@@ -55,14 +55,14 @@ function ManagePage (){
         if (auth.currentUser != null) {
             const cc = await getCategory(auth.currentUser.email);
             setCategorys(cc)
-            if (selectedCategory == "") {
+            if (selectedCategory === "") {
                 setFlashcardList([])
                 setLoading(false);
                 return;
             }
             else {
                 for (var fc in categorys) {
-                    if (categorys[fc].name == selectedCategory) {
+                    if (categorys[fc].name === selectedCategory) {
                         if (!categorys[fc].flashcards) {
                             setFlashcardList([])
                             return;
@@ -78,7 +78,7 @@ function ManagePage (){
 
     const changeSelectedCategory = (name) => {
         setLoading(true);
-        if (selectedCategory == name) {
+        if (selectedCategory === name) {
             setSelectedCategory("")
             return;
         }
@@ -92,6 +92,15 @@ function ManagePage (){
             user: email,
             category: selectedCategory,
             flashcards: flashcards
+        })
+        return result;
+    }
+
+    const deleteCategoryFromDB = async () => {
+        const email = auth.currentUser.email
+        const result = await deleteCategory({
+            user: email,
+            category: selectedCategory
         })
         return result;
     }
@@ -120,7 +129,8 @@ function ManagePage (){
                             key={index} 
                             cat={cat} 
                             selectedCategory={selectedCategory} 
-                            handleSelected={changeSelectedCategory}/> 
+                            handleSelected={changeSelectedCategory}
+                            handleDelete={deleteCategoryFromDB}/>
                             )})}
                         <IconButton aria-label="addCategory" size="large" onClick={toggleAddCategoryDrawer(true)}>
                             <AddIcon fontSize="inherit" />

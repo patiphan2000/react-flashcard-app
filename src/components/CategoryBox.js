@@ -6,11 +6,27 @@ import { Card, CardContent, CardActionArea } from '@mui/material';
 import CardMedia from '@mui/material/CardMedia';
 import IconButton from '@mui/material/IconButton';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 
 
-function CategoryBox({cat, selectedCategory, handleSelected}) {
+function CategoryBox({cat, selectedCategory, handleSelected, handleDelete}) {
 
     const gotSelected = selectedCategory===cat.name;
+
+    const [open, setOpen] = React.useState(false);
+
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
 
     return (
         <Grid 
@@ -53,9 +69,36 @@ function CategoryBox({cat, selectedCategory, handleSelected}) {
                     zIndex:(gotSelected)? 0:-2,
                     transition: '0.2s ease',
                     transform: (gotSelected)? 'translate(0px, 60px)':'translate(0px, 20px)'
-                }}>
+                }}
+                onClick={handleClickOpen}>
                     <DeleteOutlineIcon fontSize="inherit" />
                 </IconButton>
+                <Dialog
+                    open={open}
+                    onClose={handleClose}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                >
+                    <DialogTitle id="alert-dialog-title">
+                    Are you sure you want to delete {selectedCategory} category?
+                    </DialogTitle>
+                    <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        Delete {selectedCategory} category will delete all of the flashcards in the category.
+                    </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                    <Button 
+                    color="error"
+                    onClick={()=>{
+                        handleClose()
+                        handleDelete()
+                    }} autoFocus>
+                        Confirm
+                    </Button>
+                    <Button onClick={handleClose}>Cancel</Button>
+                    </DialogActions>
+                </Dialog>
             </Grid>
     )
 }

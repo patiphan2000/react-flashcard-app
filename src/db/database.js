@@ -1,13 +1,8 @@
 import axios from 'axios'
-import { createApi, toJson } from 'unsplash-js';
+import { createApi } from 'unsplash-js';
 import * as sample from './sample.json'
 
 const request = axios.create({ baseURL: process.env.REACT_APP_DATABASE_END_POINT })
-
-const unsplash = createApi ({
-    applicationId: process.env.REACT_APP_UNPLASH_APP_ACCESS_KEY,
-    // secret: process.env.REACT_APP_UNPLASH_APP_SECRET
-});
 
 const data = {
     users: [
@@ -101,12 +96,6 @@ export async function addNewCard(newcardInfo) {
                             return true;
                         })
                     } catch (error) {
-                        // const err = error as AxiosError
-                        // if (err.response) {
-                        //    console.log(err.response.status)
-                        //    console.log(err.response.data)
-                        // }
-                        // this.handleAxiosError(error)
                         return false
                     }
                 }
@@ -150,12 +139,6 @@ export async function deleteCard(newcardInfoList) {
                             return true;
                         })
                     } catch (error) {
-                        // const err = error as AxiosError
-                        // if (err.response) {
-                        //    console.log(err.response.status)
-                        //    console.log(err.response.data)
-                        // }
-                        // this.handleAxiosError(error)
                         return false
                     }
                 }
@@ -184,14 +167,35 @@ export async function addNewCategory(categoryInfo) {
                     return true;
                 })
             } catch (error) {
-                // const err = error as AxiosError
-                // if (err.response) {
-                //    console.log(err.response.status)
-                //    console.log(err.response.data)
-                // }
-                // this.handleAxiosError(error)
                 return false
             }
+        }
+    }
+    return false
+}
+
+export async function deleteCategory(categoryInfo) {
+    const response = await request.get('/flashcard.json')
+    const data = response.data
+    for (var user in data.users) {
+        if (data.users[user].email === categoryInfo.user) {
+            for (var cat in data.users[user].category) {
+                if (data.users[user].category[cat].name === categoryInfo.category){
+                    data.users[user].category.splice(cat, 1)
+                    const newData = {
+                        users: data.users
+                    }
+                    try {
+                        await request.patch('/flashcard.json', newData).then(response => {
+                            console.log(response);
+                            return true;
+                        })
+                    } catch (error) {
+                        return false
+                    }
+                }
+            }
+
         }
     }
     return false
