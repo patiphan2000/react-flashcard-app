@@ -22,11 +22,18 @@ export async function addNewCard(newcardInfo) {
     const response = await request.get('/flashcard.json')
     const data = response.data
     for (var user in data.users) {
-        if (data.users[user].email === newcardInfo.user){
+        const userEmail = data.users[user].email;
+        if (userEmail === newcardInfo.user){
             for (var cat in data.users[user].category) {
-                if (data.users[user].category[cat].name === newcardInfo.category) {
+                const categoryname = data.users[user].category[cat].name;
+                if (categoryname === newcardInfo.category) {
                     if (!data.users[user].category[cat].flashcards) {
                         data.users[user].category[cat].flashcards = []
+                    }
+                    // limit test user to have only 10 flashcard per category.
+                    if (data.users[user].category[cat].flashcards.length >= 10
+                        && userEmail === 'test@email.com') {
+                        return false;
                     }
                     // push new card
                     data.users[user].category[cat].flashcards.push(newcardInfo.card)
@@ -98,6 +105,13 @@ export async function addNewCategory(categoryInfo) {
     const data = response.data
     for (var user in data.users) {
         if (data.users[user].email === categoryInfo.user){
+
+            // limit test user to have only 4 category.
+            if (data.users[user].category.length >= 4
+                && data.users[user].email==='test@email.com') {
+                    return false;
+                }
+
             // console.log(data.users[user].category);
             data.users[user].category.push({
                 name: categoryInfo.name,

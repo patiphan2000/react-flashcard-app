@@ -66,6 +66,8 @@ function AddFlashcardForm({category}) {
                     an error occurred card failed to add!
                 </Alert>
             )
+            setOpenSnackbar(true)
+            return;
         }
         setAlertBar(
             <Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}>
@@ -84,7 +86,7 @@ function AddFlashcardForm({category}) {
     };
 
     const addNewCardToDB = async () => {
-        const email = await auth.currentUser.email
+        const email = auth.currentUser.email
         return addNewCard({
             user: email,
             category: category,
