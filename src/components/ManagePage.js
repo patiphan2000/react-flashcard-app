@@ -109,29 +109,42 @@ function ManagePage (){
                         direction="row"
                         divider={<Divider orientation="vertical" flexItem />}
                         spacing={2}
-                        sx={{ height: 85, maxWidth: '90vw', overflowX: 'auto' }}>
+                        sx={{ height: 110, maxWidth: '90vw', overflowX: 'auto' }}>
                         {categorys.map((cat, index) => {
                             return (
-                                <Card key={index} sx={{ height: 80, minWidth: 150, maxWidth: 400 }}>
-                                    <CardActionArea onClick={()=>{changeSelectedCategory(cat.name)}}>
-                                        <CardMedia
-                                        component="img"
-                                        height="100"
-                                        alt={cat.name}
-                                        image={cat.imageUrl}
-                                        sx={{ position: 'absolute' }}
-                                        />
-                                        <CardContent sx={{
-                                            position:'absolute',
-                                            color:'white',
-                                            textShadow : '1px 1px 10px #fff, 2px 2px 2px #212121'
-                                            }}>
-                                            <Typography gutterBottom variant="h5" component="div">
-                                                {cat.name}
-                                            </Typography>
-                                        </CardContent>
-                                    </CardActionArea>
-                                </Card>
+                                <Grid 
+                                container 
+                                direction="row"
+                                alignItems="center"
+                                justifyContent="center">
+                                    <Card key={index} sx={{ height: 80, minWidth: 150, maxWidth: 400 }}>
+                                        <CardActionArea onClick={()=>{changeSelectedCategory(cat.name)}}>
+                                            <CardMedia
+                                            component="img"
+                                            height="100"
+                                            alt={cat.name}
+                                            image={cat.imageUrl}
+                                            sx={{ position: 'absolute' }}
+                                            />
+                                            <CardContent sx={{
+                                                position:'absolute',
+                                                color:'white',
+                                                alignItems: 'center',
+                                                textShadow : '1px 1px 10px #fff, 2px 2px 2px #212121'
+                                                }}>
+                                                <Typography gutterBottom variant="h5" component="div">
+                                                    {cat.name}
+                                                </Typography>
+                                            </CardContent>
+                                        </CardActionArea>
+                                    </Card>
+                                    { selectedCategory==cat.name?
+                                        <IconButton aria-label="addCategory" size="small">
+                                            <AddIcon fontSize="inherit" />
+                                        </IconButton>
+                                        : <></>
+                                    }
+                                </Grid>
                                 )})}
                         <IconButton aria-label="addCategory" size="large" onClick={toggleAddCategoryDrawer(true)}>
                             <AddIcon fontSize="inherit" />
