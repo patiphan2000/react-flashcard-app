@@ -101,6 +101,10 @@ function AddCategoryForm() {
         }
         if (coverPhotos.length > 0) {
             return (
+                <div>
+                <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom align="center">
+                    Select cover photo
+                </Typography>
                 <ImageList sx={{ width: {xs: 250, sm: 500}, height: 450 }} cols={3} rowHeight={164}>
                     {coverPhotos.map((item) => (
                         <ImageListItem key={item.id} onClick={()=>handleSelectPhoto(item.urls.regular)}>
@@ -118,6 +122,10 @@ function AddCategoryForm() {
                         </ImageListItem>
                     ))}
                 </ImageList>
+                <Typography sx={{ fontSize: 14, color:"red" }} color="text.secondary" gutterBottom align="center">
+                    * Category name and cover photo cannot be change
+                </Typography>
+                </div>
             )
         }
         return (<></>)
@@ -151,7 +159,10 @@ function AddCategoryForm() {
                         />
                     </Grid>
                     <Grid item xs={12}>
-                        <Button onClick={searchPhotos}>search image</Button>
+                        { newCategory!==""?
+                        <Button onClick={searchPhotos}>next</Button>
+                        : <></>
+                        }
                     </Grid>
                     <Grid item xs={12}>
                         <Grid container alignItems="center" justifyContent="center">
@@ -161,7 +172,10 @@ function AddCategoryForm() {
                 </Grid>
             </CardContent>
             <CardActions>
-            <Button size="small" color="success" onClick={submitNewCategory}>Add new card</Button>
+                { newCoverPhoto!==""?
+                <Button size="small" color="success" onClick={submitNewCategory}>Add new category</Button>
+                : <></>
+                }
             </CardActions>
 
             <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleClose}>
