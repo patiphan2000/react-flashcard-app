@@ -1,1 +1,2 @@
-# Simple Flashcards App
+# Flashcards App
+flashcard app

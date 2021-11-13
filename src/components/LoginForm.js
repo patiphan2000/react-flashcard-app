@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import auth from '../firebase'
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { Navigate, useNavigate } from "react-router-dom";
 
 import Box from '@mui/material/Box';
@@ -16,6 +16,8 @@ import Alert from '@mui/material/Alert';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
+const auth = getAuth()
+
 function LoginForm ({authState, setAuthState}) {
   
   const navigate = useNavigate();
@@ -26,19 +28,17 @@ function LoginForm ({authState, setAuthState}) {
     const { name, value } = e.target
     // console.log(name, value);
     var authData = authState
-    console.log(authData);
     authData[name] = value
     setAuthState(authData)
   }
 
-  const onSubmitHandler = (e) => {
+  const onSubmitHandler = async (e) => {
     e.preventDefault()
 
     const email = authState.email
     const password = authState.password
     
-    auth
-      .signInWithEmailAndPassword(email, password)
+    await signInWithEmailAndPassword(auth, email, password)
       .then(response => {
         setAuthState({
           currentUser: response.user
@@ -50,15 +50,6 @@ function LoginForm ({authState, setAuthState}) {
           message: error.message
         })
       })
-  }
-
-  const logout = (e) => {
-    e.preventDefault()
-    auth.signOut().then(response => {
-      setAuthState({
-        currentUser: null
-      })
-    })
   }
 
   const handleClickShowPassword = () => {
