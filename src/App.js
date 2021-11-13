@@ -6,7 +6,7 @@ import {
   Routes,
 } from "react-router-dom";
 import { app } from './firebase'
-import { getAuth, signOut } from "firebase/auth";
+import { getAuth } from "firebase/auth";
 
 import LoginForm from './components/LoginForm'
 import PrivateRoute from './components/PrivateRoute';

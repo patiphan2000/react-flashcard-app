@@ -31,7 +31,6 @@ function AddCategoryForm() {
     const [newCategory, setNewCategory] = useState("")
     const [newCoverPhoto, setNewCoverPhoto] = useState("")
     const [coverPhotos, setCoverPhotos] = useState([])
-    const [photoChoice, setPhotoChoice] = useState(<></>)
 
     const [openSnackbar, setOpenSnackbar] = useState(false)
     const [alertBar, setAlertBar] = useState()
@@ -43,7 +42,7 @@ function AddCategoryForm() {
     }
 
     const submitNewCategory = () => {
-        if (newCategory.replace(/\s/g,"") != "") {
+        if (newCategory.replace(/\s/g,"") !== "") {
             const status = addNewCategoryToDB()
             if (status) {
                 setAlertBar(
@@ -84,7 +83,7 @@ function AddCategoryForm() {
 
     const searchPhotos = async () => {
         setLoading(true)
-        if (newCategory.replace(/\s/g,"") == "") { return; }
+        if (newCategory.replace(/\s/g,"") === "") { return; }
         const photos = await getPhoto(newCategory)
         var newPhotoList = []
         for (var i in photos) {
@@ -111,9 +110,9 @@ function AddCategoryForm() {
                             loading="lazy"
                         />
                         <ImageListItemBar
-                        title={(item.urls.regular==newCoverPhoto)? "selected":""}
+                        title={(item.urls.regular===newCoverPhoto)? "selected":""}
                         sx={{
-                            background: (item.urls.regular==newCoverPhoto)?'rgba(65, 169, 76, 0.6)':'rgba(65, 169, 76, 0.0)'
+                            background: (item.urls.regular===newCoverPhoto)?'rgba(65, 169, 76, 0.6)':'rgba(65, 169, 76, 0.0)'
                         }}
                         />
                         </ImageListItem>

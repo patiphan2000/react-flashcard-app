@@ -48,9 +48,9 @@ function AddFlashcardForm({category}) {
     }
 
     const submitNewCategory = () => {
-        if (newCard.front.text.replace(/\s/g,"") != "" 
+        if (newCard.front.text.replace(/\s/g,"") !== "" 
             &&
-        newCard.back.text.replace(/\s/g,"") != "") {
+        newCard.back.text.replace(/\s/g,"") !== "") {
             const status = addNewCardToDB()
             if (status) {
                 setAlertBar(

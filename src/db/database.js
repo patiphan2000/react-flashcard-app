@@ -1,53 +1,8 @@
 import axios from 'axios'
-import { createApi } from 'unsplash-js';
 import * as sample from './sample.json'
 
-const request = axios.create({ baseURL: process.env.REACT_APP_DATABASE_END_POINT })
 
-const data = {
-    users: [
-        {
-            email: 'test@email.com',
-            category: [
-                {
-                    name: 'French',
-                    flashcards: [
-                        {
-                            front: {
-                                text: 'front',
-                                subText: 'front sub'
-                            },
-                            back: {
-                                text: 'back',
-                                subText: 'back sub'
-                            }
-                        },
-                        {
-                            front: {
-                                text: 'front2',
-                                subText: 'front sub'
-                            },
-                            back: {
-                                text: 'back2',
-                                subText: 'back sub'
-                            }
-                        },
-                        {
-                            front: {
-                                text: 'front3',
-                                subText: 'front sub'
-                            },
-                            back: {
-                                text: 'back3',
-                                subText: 'back sub'
-                            }
-                        }
-                    ]
-                },
-            ]
-        },
-    ]
-}
+const request = axios.create({ baseURL: process.env.REACT_APP_DATABASE_END_POINT })
 
 export async function getCategory(userEmail) {
     const response = await request.get('/flashcard.json')

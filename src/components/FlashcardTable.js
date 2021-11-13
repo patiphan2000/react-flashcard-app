@@ -104,7 +104,7 @@ export default function FlashcardTable({flashcards, handleDelete}) {
       for (var index in selected) {
         selectedFlashcards.push(flashcards[selected[index]])
       }
-      const status = await handleDelete(selectedFlashcards)
+      await handleDelete(selectedFlashcards)
       setSelected([])
     }
 

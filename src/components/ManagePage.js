@@ -37,6 +37,7 @@ function ManagePage (){
     const [openSnackbar, setOpenSnackbar] = useState(false)
     const [alertBar, setAlertBar] = useState()
     const [loading, setLoading] = useState(false)
+    const [trigger, setTrigger] = useState(true)
 
     const toggleAddCardDrawer = (open) => (event) => {
         if (
@@ -58,6 +59,7 @@ function ManagePage (){
           return;
         }
         setAddCategoryDrawer(open);
+        setTrigger(!trigger)
     };
 
     const handleClose = (event, reason) => {
@@ -65,31 +67,6 @@ function ManagePage (){
             return;
         }
         setOpenSnackbar(false);
-    }
-
-    const fetchData = async () => {
-        if (auth.currentUser != null) {
-            const cc = await getCategory(auth.currentUser.email);
-            setCategorys(cc)
-            if (selectedCategory === "") {
-                setFlashcardList([])
-                setLoading(false);
-                return;
-            }
-            else {
-                for (var fc in categorys) {
-                    if (categorys[fc].name === selectedCategory) {
-                        if (!categorys[fc].flashcards) {
-                            setFlashcardList([])
-                            return;
-                        }
-                        setFlashcardList(categorys[fc].flashcards)
-                        setLoading(false);
-                        return;
-                    }
-                }
-            }
-        }
     }
 
     const changeSelectedCategory = (name) => {
@@ -136,8 +113,34 @@ function ManagePage (){
     }
 
     useEffect(() => {
+
+        const fetchData = async () => {
+            if (auth.currentUser != null) {
+                const cc = await getCategory(auth.currentUser.email);
+                setCategorys(cc)
+                if (selectedCategory === "") {
+                    setFlashcardList([])
+                    setLoading(false);
+                    return;
+                }
+                else {
+                    for (var fc in categorys) {
+                        if (categorys[fc].name === selectedCategory) {
+                            if (!categorys[fc].flashcards) {
+                                setFlashcardList([])
+                                return;
+                            }
+                            setFlashcardList(categorys[fc].flashcards)
+                            setLoading(false);
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+        
         fetchData()
-    }, [selectedCategory, flashcardList]);
+    }, [selectedCategory, flashcardList, trigger]);
 
     return (
             <Grid container
@@ -153,7 +156,6 @@ function ManagePage (){
                         spacing={1}
                         sx={{ height: 110, maxWidth: '95vw', overflowX: 'auto' }}>
                         {categorys.map((cat, index) => {
-                            const gotSelected = selectedCategory==cat.name;
                             return ( 
                             <CategoryBox 
                             key={index} 
@@ -175,7 +177,7 @@ function ManagePage (){
                         <FlashcardTable flashcards={flashcardList} handleDelete={deleteFlashcardFromDB} ></FlashcardTable>     
                     }
                 </Grid>
-                { selectedCategory!=""?  
+                { selectedCategory!==""?  
                 <Grid item xs={12}>
                     <AddButton clickHandler={toggleAddCardDrawer(true)}/>
                 </Grid>
