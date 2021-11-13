@@ -63,7 +63,7 @@ function AddFlashcardForm({category}) {
             }
             setAlertBar(
                 <Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}>
-                    fn error occurred card failed to add!
+                    an error occurred card failed to add!
                 </Alert>
             )
         }

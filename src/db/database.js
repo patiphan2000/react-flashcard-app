@@ -86,13 +86,13 @@ export async function addNewCard(newcardInfo) {
                     // push new card
                     data.users[user].category[cat].flashcards.push(newcardInfo.card)
                     console.log(data.users[user].category[cat].flashcards);
-                    console.log('card added!');
+                    // console.log('card added!')
                     const newData = {
                         users: data.users
                     }
                     try {
                         await request.patch('/flashcard.json', newData).then(response => {
-                            console.log(response);
+                            // console.log(response);
                             return true;
                         })
                     } catch (error) {
@@ -126,7 +126,7 @@ export async function deleteCard(newcardInfoList) {
                     const filterList = data.users[user].category[cat].flashcards.filter(
                         ele => !checkInclude(ele))
 
-                    console.log(filterList);
+                    // console.log(filterList);
                     
                     data.users[user].category[cat].flashcards = filterList
 
@@ -135,9 +135,9 @@ export async function deleteCard(newcardInfoList) {
                     }
                     try {
                         await request.patch('/flashcard.json', newData).then(response => {
-                            console.log(response);
                             return true;
                         })
+                        return true;
                     } catch (error) {
                         return false
                     }

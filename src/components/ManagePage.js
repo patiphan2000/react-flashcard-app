@@ -16,8 +16,15 @@ import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import AddIcon from '@mui/icons-material/Add';
 import IconButton from '@mui/material/IconButton';
 import CircularProgress from '@mui/material/CircularProgress';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
+
 
 const auth = getAuth(app);
+
+const Alert = React.forwardRef(function Alert(props, ref) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+    });
 
 function ManagePage (){
 
@@ -27,6 +34,8 @@ function ManagePage (){
     const [addCardDrawer, setAddCardDrawer] = useState(false)
     const [addCategoryDrawer, setAddCategoryDrawer] = useState(false)
 
+    const [openSnackbar, setOpenSnackbar] = useState(false)
+    const [alertBar, setAlertBar] = useState()
     const [loading, setLoading] = useState(false)
 
     const toggleAddCardDrawer = (open) => (event) => {
@@ -50,6 +59,13 @@ function ManagePage (){
         }
         setAddCategoryDrawer(open);
     };
+
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setOpenSnackbar(false);
+    }
 
     const fetchData = async () => {
         if (auth.currentUser != null) {
@@ -93,7 +109,21 @@ function ManagePage (){
             category: selectedCategory,
             flashcards: flashcards
         })
-        return result;
+        if (result) {
+            setAlertBar(
+                <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+                    flashcards has been deleted!
+                </Alert>
+            )
+        }
+        else {
+            setAlertBar(
+                <Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}>
+                    an error occurred card failed to delete!
+                </Alert>
+            )
+        }
+        setOpenSnackbar(true)
     }
 
     const deleteCategoryFromDB = async () => {
@@ -150,6 +180,11 @@ function ManagePage (){
                     <AddButton clickHandler={toggleAddCardDrawer(true)}/>
                 </Grid>
                 : ""}
+
+                <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleClose}>
+                    {alertBar}
+                </Snackbar>
+
                 <SwipeableDrawer
                     anchor='bottom'
                     open={addCardDrawer}
