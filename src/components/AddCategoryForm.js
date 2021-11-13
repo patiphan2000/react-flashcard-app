@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { app } from '../firebase'
 import { getAuth } from "firebase/auth";
-import { getPhoto } from '../db/database'
+import { getPhoto, addNewCategory } from '../db/database'
 
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -44,7 +44,7 @@ function AddCategoryForm() {
 
     const submitNewCategory = () => {
         if (newCategory.replace(/\s/g,"") != "") {
-            const status = true
+            const status = addNewCategoryToDB()
             if (status) {
                 setAlertBar(
                     <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
@@ -126,6 +126,11 @@ function AddCategoryForm() {
 
     const addNewCategoryToDB = async () => {
         const email = auth.currentUser.email
+        return addNewCategory({
+            user: email,
+            name: newCategory,
+            imageUrl: newCoverPhoto
+        })
     }
 
     return (

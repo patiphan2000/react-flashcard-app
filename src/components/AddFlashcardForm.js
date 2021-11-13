@@ -47,7 +47,7 @@ function AddFlashcardForm({category}) {
         setNewcard(card)
     }
 
-    const submitNewCard = () => {
+    const submitNewCategory = () => {
         if (newCard.front.text.replace(/\s/g,"") != "" 
             &&
         newCard.back.text.replace(/\s/g,"") != "") {
@@ -85,7 +85,7 @@ function AddFlashcardForm({category}) {
 
     const addNewCardToDB = async () => {
         const email = await auth.currentUser.email
-        addNewCard({
+        return addNewCard({
             user: email,
             category: category,
             card: newCard
@@ -168,7 +168,7 @@ function AddFlashcardForm({category}) {
                 </Grid>
             </CardContent>
             <CardActions>
-            <Button size="small" color="success" onClick={submitNewCard}>Add new card</Button>
+            <Button size="small" color="success" onClick={submitNewCategory}>Add new card</Button>
             </CardActions>
 
             <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleClose}>

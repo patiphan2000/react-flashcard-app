@@ -165,6 +165,38 @@ export async function deleteCard(newcardInfoList) {
     return false;
 }
 
+export async function addNewCategory(categoryInfo) {
+    const response = await request.get('/flashcard.json')
+    const data = response.data
+    for (var user in data.users) {
+        if (data.users[user].email === categoryInfo.user){
+            // console.log(data.users[user].category);
+            data.users[user].category.push({
+                name: categoryInfo.name,
+                imageUrl: categoryInfo.imageUrl
+            })
+            const newData = {
+                users: data.users
+            }
+            try {
+                await request.patch('/flashcard.json', newData).then(response => {
+                    console.log(response);
+                    return true;
+                })
+            } catch (error) {
+                // const err = error as AxiosError
+                // if (err.response) {
+                //    console.log(err.response.status)
+                //    console.log(err.response.data)
+                // }
+                // this.handleAxiosError(error)
+                return false
+            }
+        }
+    }
+    return false
+}
+
 export async function getPhoto(keyword) {
     const url = "https://api.unsplash.com/search/photos?page=1&per_page=6&query="
     const client = "&client_id=" + process.env.REACT_APP_UNPLASH_APP_ACCESS_KEY
