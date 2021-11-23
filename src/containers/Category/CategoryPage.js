@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { app } from '../../firebase'
 import { getAuth } from "firebase/auth";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { getCategory } from '../../db/database'
+
+import AddButton from '../../components/AddButton';
 
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -10,14 +12,31 @@ import CardMedia from '@mui/material/CardMedia';
 import { CardActionArea } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
+
 
 const auth = getAuth(app);
 
+const Alert = React.forwardRef(function Alert(props, ref) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+    });
+
 function CategoryPage ({}) {
+
+    const { message } = useParams()
 
     const navigate = useNavigate();
 
     const [categorys, setCategorys] = useState([]);
+    const [openSnackbar, setOpenSnackbar] = useState(false)
+
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setOpenSnackbar(false);
+    };
 
     const fetchData = async () => {
         if (auth.currentUser == null) {
@@ -30,7 +49,10 @@ function CategoryPage ({}) {
 
     useEffect(() => {
         fetchData()
-    }, []);
+        if (message != null) {
+            setOpenSnackbar(true)
+        }
+    }, [fetchData, message]);
 
     return (
         <Grid 
@@ -46,7 +68,7 @@ function CategoryPage ({}) {
                         <Grid key={index} item xs={12} sm={6}>
                             <Grid container alignItems="center" justifyContent="center">
                                 <Card sx={{ width: {xs: 300, md: 400} }}>
-                                    <CardActionArea component={Link} to={"/category/"+cat.name}>
+                                    <CardActionArea component={Link} to={"/flashcard/"+cat.name}>
                                         <CardMedia
                                         component="img"
                                         height="140"
@@ -65,6 +87,15 @@ function CategoryPage ({}) {
                     )
                 })}
             </Grid>
+            <Grid container justifyContent="center" sx={{ marginTop: { xs: "20px", sm: "50px"} }}>
+                <AddButton clickHandler={()=>{ navigate('/manage') }}></AddButton>
+            </Grid>
+            <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleClose}>
+                <Alert severity="error" onClose={handleClose} sx={{ width: '100%' }}>
+                    {message}
+                </Alert>
+            </Snackbar>
+            
         </Grid>
     )
 }
