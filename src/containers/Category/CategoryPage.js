@@ -12,8 +12,6 @@ import CardMedia from '@mui/material/CardMedia';
 import { CardActionArea } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
-import IconButton from '@mui/material/IconButton';
-import InfoIcon from '@mui/icons-material/Info';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 
@@ -54,7 +52,7 @@ function CategoryPage ({}) {
         if (message != null) {
             setOpenSnackbar(true)
         }
-    }, []);
+    }, [fetchData, message]);
 
     return (
         <Grid 

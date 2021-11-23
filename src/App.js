@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import {
   BrowserRouter as Router,
   Route,
-  Link,
   Routes,
 } from "react-router-dom";
 import { app } from './firebase'
@@ -17,7 +16,6 @@ import './App.css'
 
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
-import Button from '@mui/material/Button';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 

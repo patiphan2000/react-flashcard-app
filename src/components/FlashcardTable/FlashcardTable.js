@@ -126,7 +126,8 @@ export default function FlashcardTable({flashcards, handleDelete}) {
     React.useEffect(() => {
         var newRows = []
         flashcards.map((card, index) => {
-            newRows.push(createData(index, card.front.text, card.front.subText, card.back.text, card.back.subText))
+          newRows.push(createData(index, card.front.text, card.front.subText, card.back.text, card.back.subText))
+          return null;
         })
         setRows(newRows)
     }, [flashcards])

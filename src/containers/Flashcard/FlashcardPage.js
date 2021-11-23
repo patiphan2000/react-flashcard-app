@@ -59,7 +59,7 @@ function FlashcardPage () {
             return;
         }
         fetchData()
-      }, []);
+      });
 
     return (
         <Grid
