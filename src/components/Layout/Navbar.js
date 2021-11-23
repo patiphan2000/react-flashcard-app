@@ -28,7 +28,7 @@ import ManageSearchIcon from '@mui/icons-material/ManageSearch';
 
 const auth = getAuth(app)
 
-function Navbar({ authState, setAuthState }) {
+function Navbar({ authState, setAuthState, currentTheme, setTheme }) {
 
   const navigate = useNavigate();
 
@@ -114,8 +114,8 @@ function Navbar({ authState, setAuthState }) {
       </List>
       <Divider />
       <List>
-        <ListItem button key="themeSwitch">
-          <UseSwitchesCustom/>
+        <ListItem button key="themeSwitch">   
+            <UseSwitchesCustom currentTheme={currentTheme} setTheme={setTheme}/>
         </ListItem>
       </List>
     </Box>
