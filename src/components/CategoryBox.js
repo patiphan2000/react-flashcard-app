@@ -6,7 +6,7 @@ import { Card, CardContent, CardActionArea } from '@mui/material';
 import CardMedia from '@mui/material/CardMedia';
 
 
-function CategoryBox({cat, handleSelected}) {
+function CategoryBox({cat, handleSelected, seleted}) {
 
     return (
         <Grid 
@@ -18,7 +18,9 @@ function CategoryBox({cat, handleSelected}) {
                 sx={{ 
                     height: 80, 
                     minWidth: 150, 
-                    maxWidth: 400 }}>
+                    maxWidth: 400,
+                    transition: '0.2s ease',
+                    transform: (seleted)? 'scale(1.2)':'scale(1)' }}>
                     <CardActionArea onClick={()=>{handleSelected(cat.name)}}>
                         <CardMedia
                         component="img"

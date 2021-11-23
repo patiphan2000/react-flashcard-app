@@ -178,14 +178,16 @@ function ManagePage (){
                     <Stack
                         direction="row"
                         divider={<Divider orientation="vertical" flexItem />}
-                        spacing={1}
+                        spacing={1.5}
+                        padding={2}
                         sx={{ height: 110, maxWidth: '95vw', overflowX: 'auto' }}>
                         {categorys.map((cat, index) => {
                             return ( 
                                 <CategoryBox 
                                 key={index} 
                                 cat={cat} 
-                                handleSelected={changeSelectedCategory}/>
+                                handleSelected={changeSelectedCategory}
+                                seleted={cat.name===selectedCategory? true:false}/>
                             )})}
                     </Stack>
 
