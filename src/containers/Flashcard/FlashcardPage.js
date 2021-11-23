@@ -102,8 +102,8 @@ function FlashcardPage () {
                         next
                     </Button>
                 </Grid>
-                <Grid item xs={12}>
-                    <AddButton/>
+                <Grid item xs={12} sx={{ marginTop: 5 }}>
+                    <AddButton clickHandler={()=>{ navigate("/manage") }} />
                 </Grid>
             </Grid>
         </Grid>
