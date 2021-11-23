@@ -140,7 +140,7 @@ function ManagePage (){
                 setCategorys(cc)
                 if (selectedCategory === "") {
                     setFlashcardList([])
-                    setLoading(false);
+                    // setLoading(false);
                     return;
                 }
                 else {
@@ -151,7 +151,7 @@ function ManagePage (){
                                 return;
                             }
                             setFlashcardList(categorys[fc].flashcards)
-                            setLoading(false);
+                            // setLoading(false);
                             return;
                         }
                     }
@@ -165,7 +165,11 @@ function ManagePage (){
         }
 
         fetchData()
-    }, [selectedCategory, flashcardList, trigger]);
+    }, [selectedCategory, trigger]);
+
+    useEffect(() => {
+        setLoading(false);
+    }, [flashcardList])
 
     return (
             <Grid container
