@@ -25,11 +25,13 @@ const auth = getAuth(app);
 
 function App () {
 
+  const [useLightTheme, setUseLightTheme] = useState(true);
+
   const theme = React.useMemo(
     () =>
       createTheme({
         palette: {
-          mode: 'light',
+          mode: useLightTheme? 'light':'dark',
         },
       }),
     [],
@@ -62,7 +64,7 @@ function App () {
       <CssBaseline />
       <Router>
 
-        <Navbar authState={authState} setAuthState={setAuthState}/>
+        <Navbar authState={authState} setAuthState={setAuthState} setTheme={setUseLightTheme}/>
         
         <Container>
           <Grid
@@ -73,18 +75,24 @@ function App () {
             style={{ minHeight: '100vh' }}
           >
             <Routes>
-              <Route path="/" element={ <div>
-                <h1>Welcome to Flashcard app</h1>
-                <Button component={Link} to="/category">flashcard</Button>
-                <Button component={Link} to="/manage">manage</Button>
-              </div> }/>
+              <Route path="/" element={ 
+                // <div>
+                //   <h1>Welcome to Flashcard app</h1>
+                //   <Button component={Link} to="/category">flashcard</Button>
+                //   <Button component={Link} to="/manage">manage</Button>
+                // </div> 
+                <CategoryPage/>
+              }/>
               <Route path="/login" element={
                 <LoginForm authState={authState} setAuthState={setAuthState}/>
               } />
               <Route path="/category" element={
                 <CategoryPage/>
               } />
-              <Route path="/category/:categoryName" element={
+              <Route path="/category/:message" element={
+                <CategoryPage/>
+              } />
+              <Route path="/flashcard/:categoryName" element={
                 <FlashcardPage authState={authState}/>
               } />
               <Route path="/manage" element={

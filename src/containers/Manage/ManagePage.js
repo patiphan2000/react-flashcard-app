@@ -4,7 +4,7 @@ import { getAuth } from "firebase/auth";
 import { getCategory, deleteCard, deleteCategory } from '../../db/database'
 import { useNavigate } from "react-router-dom";
 
-import FlashcardTable from '../../components/FlashcardTable';
+import FlashcardTable from '../../components/FlashcardTable/FlashcardTable';
 import AddButton from '../../components/AddButton';
 import AddFlashcardForm from '../../components/AddFlashcardForm';
 import AddCategoryForm from '../../components/AddCategoryForm';

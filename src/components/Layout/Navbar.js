@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { app } from '../../firebase'
 import { getAuth, signOut } from "firebase/auth";
 
@@ -21,95 +21,99 @@ const auth = getAuth(app)
 
 function Navbar({ authState, setAuthState }) {
 
-    const [anchorEl, setAnchorEl] = useState(null);
+  const navigate = useNavigate();
 
-    const user = authState.currentUser
+  const [anchorEl, setAnchorEl] = useState(null);
 
-    const isMenuOpen = Boolean(anchorEl);
+  const user = authState.currentUser
 
-    const logout = async (e) => {
-        e.preventDefault()
-        await signOut(auth).then(response => {
-          setAuthState({
-            currentUser: null
-          })
+  const isMenuOpen = Boolean(anchorEl);
+
+  const logout = async (e) => {
+      e.preventDefault()
+      await signOut(auth).then(response => {
+        setAuthState({
+          currentUser: null
         })
-    }
+        setAnchorEl(false)
+        navigate('/login')
+      })
+  }
 
-    const handleProfileMenuOpen = (event) => {
-        setAnchorEl(event.currentTarget);
-        };
-    
-        const handleMenuClose = () => {
-        setAnchorEl(null);
-        };
+  const handleProfileMenuOpen = (event) => {
+      setAnchorEl(event.currentTarget);
+      };
+  
+      const handleMenuClose = () => {
+      setAnchorEl(null);
+      };
 
-    const menuId = 'primary-search-account-menu';
-    
-    const renderMenu = (
-        <Menu
-        anchorEl={anchorEl}
-        anchorOrigin={{
-            vertical: 'top',
-            horizontal: 'right',
-        }}
-        id={menuId}
-        keepMounted
-        transformOrigin={{
-            vertical: 'top',
-            horizontal: 'right',
-        }}
-        open={isMenuOpen}
-        onClose={handleMenuClose}
-        >
-          <MenuItem>
-            <UseSwitchesCustom/>
-          </MenuItem>
-          <MenuItem onClick={logout}>Logout</MenuItem>
-        </Menu>
-    );
+  const menuId = 'primary-search-account-menu';
+  
+  const renderMenu = (
+      <Menu
+      anchorEl={anchorEl}
+      anchorOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+      }}
+      id={menuId}
+      keepMounted
+      transformOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+      }}
+      open={isMenuOpen}
+      onClose={handleMenuClose}
+      >
+        <MenuItem>
+          <UseSwitchesCustom/>
+        </MenuItem>
+        <MenuItem onClick={logout}>Logout</MenuItem>
+      </Menu>
+  );
 
-    return (
-        <Box sx={{ flexGrow: 1 }}>
-          <AppBar position="static">
-            <Toolbar>
+  return (
+      <Box sx={{ flexGrow: 1 }}>
+        <AppBar position="static">
+          <Toolbar>
+            <IconButton
+              size="large"
+              edge="start"
+              color="inherit"
+              aria-label="menu"
+              sx={{ mr: 2 }}
+            >
+              <MenuIcon />
+            </IconButton>
+            <Typography 
+            align="left"
+            variant="h4" 
+            component="div" 
+            sx={{ flexGrow: 1 }}>
+              FlashCard
+            </Typography>
+            {
+              user != null?
               <IconButton
                 size="large"
-                edge="start"
+                edge="end"
+                aria-label="account of current user"
+                aria-controls={menuId}
+                aria-haspopup="true"
+                onClick={handleProfileMenuOpen}
                 color="inherit"
-                aria-label="menu"
-                sx={{ mr: 2 }}
               >
-                <MenuIcon />
+                <AccountCircle />
               </IconButton>
-              <Typography 
-              align="left"
-              variant="h4" 
-              component="div" 
-              sx={{ flexGrow: 1 }}>
-                FlashCard
-              </Typography>
-              {
-                user != null?
-                <IconButton
-                  size="large"
-                  edge="end"
-                  aria-label="account of current user"
-                  aria-controls={menuId}
-                  aria-haspopup="true"
-                  onClick={handleProfileMenuOpen}
-                  color="inherit"
-                >
-                  <AccountCircle />
-                </IconButton>
-                :
-                <Button component={Link} to="/login" color="inherit">Login</Button>
-              }
-            </Toolbar>
-          </AppBar>
-          {renderMenu}
-        </Box>
-    )
+              :
+              <Button component={Link} to="/login" color="inherit">Login</Button>
+            }
+          </Toolbar>
+        </AppBar>
+        {renderMenu}
+      </Box>
+  )
 }
 
 export default Navbar
