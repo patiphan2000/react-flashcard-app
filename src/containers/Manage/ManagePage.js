@@ -14,11 +14,18 @@ import Grid from '@mui/material/Grid';
 import Divider from '@mui/material/Divider';
 import Stack from '@mui/material/Stack';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
-import AddIcon from '@mui/icons-material/Add';
+import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import CircularProgress from '@mui/material/CircularProgress';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import AddIcon from '@mui/icons-material/Add';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
 
 const auth = getAuth(app);
@@ -39,6 +46,7 @@ function ManagePage (){
     const [addCategoryDrawer, setAddCategoryDrawer] = useState(false)
 
     const [openSnackbar, setOpenSnackbar] = useState(false)
+    const [openDialog, setOpenDialog] = useState(false)
     const [alertBar, setAlertBar] = useState()
     const [loading, setLoading] = useState(false)
     const [trigger, setTrigger] = useState(true)
@@ -71,6 +79,14 @@ function ManagePage (){
             return;
         }
         setOpenSnackbar(false);
+    }
+
+    const handleClickOpenDialog = () => {
+        setOpenDialog(true);
+    };
+
+    const handleCloseDialog = () => {
+        setOpenDialog(false)
     }
 
     const changeSelectedCategory = (name) => {
@@ -166,17 +182,24 @@ function ManagePage (){
                         sx={{ height: 110, maxWidth: '95vw', overflowX: 'auto' }}>
                         {categorys.map((cat, index) => {
                             return ( 
-                            <CategoryBox 
-                            key={index} 
-                            cat={cat} 
-                            selectedCategory={selectedCategory} 
-                            handleSelected={changeSelectedCategory}
-                            handleDelete={deleteCategoryFromDB}/>
+                                <CategoryBox 
+                                key={index} 
+                                cat={cat} 
+                                handleSelected={changeSelectedCategory}/>
                             )})}
-                        <IconButton aria-label="addCategory" size="large" onClick={toggleAddCategoryDrawer(true)}>
-                            <AddIcon fontSize="inherit" />
-                        </IconButton>
                     </Stack>
+
+                    <IconButton aria-label="addCategory" size="large" onClick={toggleAddCategoryDrawer(true)}>
+                        <AddIcon fontSize="inherit" />
+                    </IconButton>
+                    {
+                        (selectedCategory!=="")?
+                        <IconButton aria-label="addCategory" size="large" onClick={handleClickOpenDialog}>
+                            <DeleteOutlineIcon fontSize="inherit" />
+                        </IconButton>
+                        : <></>
+                    }
+
                 </Grid>
                 <Grid item xs={12} sx={{marginTop: "2rem"}}>
                     {
@@ -227,6 +250,33 @@ function ManagePage (){
                         <AddCategoryForm/>
                     </Grid>
                 </SwipeableDrawer>
+
+                <Dialog
+                    open={openDialog}
+                    onClose={handleCloseDialog}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                >
+                    <DialogTitle id="alert-dialog-title">
+                    Are you sure you want to delete {selectedCategory} category?
+                    </DialogTitle>
+                    <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        Delete {selectedCategory} category will delete all of the flashcards in the category.
+                    </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                    <Button 
+                    color="error"
+                    onClick={()=>{
+                        handleCloseDialog()
+                        deleteCategoryFromDB()
+                    }} autoFocus>
+                        Delete
+                    </Button>
+                    <Button onClick={handleCloseDialog}>Cancel</Button>
+                    </DialogActions>
+                </Dialog>
                 
             </Grid>
     )
