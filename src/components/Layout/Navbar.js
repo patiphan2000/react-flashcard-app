@@ -7,23 +7,33 @@ import UseSwitchesCustom from '../UseSwitchCustom';
 
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
+import Drawer from '@mui/material/Drawer';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
+import Toolbar from '@mui/material/Toolbar';
+import Divider from '@mui/material/Divider';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import MenuIcon from '@mui/icons-material/Menu'
+import ListItemIcon from '@mui/material/ListItemIcon';
+
+import ClassIcon from '@mui/icons-material/Class';
+import ManageSearchIcon from '@mui/icons-material/ManageSearch';
 
 
 const auth = getAuth(app)
 
-function Navbar({ authState, setAuthState }) {
+function Navbar({ authState, setAuthState, currentTheme, setTheme }) {
 
   const navigate = useNavigate();
 
   const [anchorEl, setAnchorEl] = useState(null);
+  const [menuOpen, setMenuOpen] = useState(false)
 
   const user = authState.currentUser
 
@@ -39,6 +49,14 @@ function Navbar({ authState, setAuthState }) {
         navigate('/login')
       })
   }
+
+  const toggleMenu = (open) => (event) => {
+    if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+      return;
+    }
+
+    setMenuOpen(open);
+  };
 
   const handleProfileMenuOpen = (event) => {
       setAnchorEl(event.currentTarget);
@@ -66,11 +84,41 @@ function Navbar({ authState, setAuthState }) {
       open={isMenuOpen}
       onClose={handleMenuClose}
       >
-        <MenuItem>
-          <UseSwitchesCustom/>
-        </MenuItem>
         <MenuItem onClick={logout}>Logout</MenuItem>
       </Menu>
+  );
+
+  const listMenu = (
+    <Box
+      sx={{ width: 250 }}
+      role="presentation"
+      // onClick={toggleMenu(false)}
+      onKeyDown={toggleMenu(false)}
+    >
+      <List>
+
+        <ListItem button key="Category" component={Link} to="/category">
+          <ListItemIcon>
+            <ClassIcon/>
+          </ListItemIcon>
+          <ListItemText primary="Category" />
+        </ListItem>
+
+        <ListItem button key="Manage" component={Link} to="/manage">
+          <ListItemIcon>
+            <ManageSearchIcon/>
+          </ListItemIcon>
+          <ListItemText primary="Manage" />
+        </ListItem>
+
+      </List>
+      <Divider />
+      <List>
+        <ListItem button key="themeSwitch">   
+            <UseSwitchesCustom currentTheme={currentTheme} setTheme={setTheme}/>
+        </ListItem>
+      </List>
+    </Box>
   );
 
   return (
@@ -83,6 +131,7 @@ function Navbar({ authState, setAuthState }) {
               color="inherit"
               aria-label="menu"
               sx={{ mr: 2 }}
+              onClick={ toggleMenu(true) }
             >
               <MenuIcon />
             </IconButton>
@@ -113,6 +162,12 @@ function Navbar({ authState, setAuthState }) {
           </Toolbar>
         </AppBar>
         {renderMenu}
+        <Drawer
+            open={ menuOpen }
+            onClose={toggleMenu(false)}
+          >
+            { listMenu }
+        </Drawer>
       </Box>
   )
 }

@@ -19,21 +19,12 @@ import Grid from '@mui/material/Grid';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 
+
 const auth = getAuth(app);
 
 function App () {
 
-  const [useLightTheme, setUseLightTheme] = useState(true);
-
-  const theme = React.useMemo(
-    () =>
-      createTheme({
-        palette: {
-          mode: useLightTheme? 'light':'dark',
-        },
-      }),
-    [],
-  );
+  const [useLightTheme, setUseLightTheme] = useState(false);
 
   const [authState, setAuthState] = useState({
     email: '',
@@ -42,6 +33,26 @@ function App () {
     message: '',
     showPassword: false,
   });
+
+  const lightTheme = React.useMemo(
+    () =>
+      createTheme({
+        palette: {
+          mode: 'light',
+        },
+      }),
+    [],
+  );
+  
+  const darkTheme = React.useMemo(
+    () =>
+      createTheme({
+        palette: {
+          mode: 'dark',
+        },
+      }),
+    [],
+  );
 
   useEffect(() => {
     auth.onAuthStateChanged(function(user) {
@@ -58,11 +69,11 @@ function App () {
 
   return (
     <div className="App">
-      <ThemeProvider theme={theme}>
+      <ThemeProvider theme={useLightTheme? lightTheme:darkTheme}>
       <CssBaseline />
       <Router>
 
-        <Navbar authState={authState} setAuthState={setAuthState} setTheme={setUseLightTheme}/>
+        <Navbar authState={authState} setAuthState={setAuthState} currentTheme={useLightTheme} setTheme={setUseLightTheme}/>
         
         <Container>
           <Grid
