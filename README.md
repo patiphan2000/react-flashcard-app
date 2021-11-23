@@ -6,9 +6,9 @@
 I personally created this application to help me learn French and also let me practice and learn about *React*.
 
 ## Release note
-> version `0.1.0`    
+> version `0.2.0`    
 
-flashcard app with 5 basic features.
+implement theme toggle feature for user to be able to use light or dark theme
 
 ## Features
  - create category with cover image
@@ -16,6 +16,7 @@ flashcard app with 5 basic features.
  - view flipable flashcards in random order
  - delete flashcards
  - delete category(also delete all of the flashcards in the category)
+ - theme toggle(dark theme, light theme) :new:
 
 ## Usage
 You can try an application at [flashcard app](https://react-flashcard-app-six.vercel.app) then login with the *test user*
@@ -39,9 +40,9 @@ Password:
 
 ## Task & Future features
 #### Task
- - [ ] Make menu bar work
+ - [x] Make menu bar work
+ - [x] Dark theme :last_quarter_moon_with_face:
  - [ ] Make a UI to indicate which side of flashcards are currently displayed
- - [ ] Dark theme :last_quarter_moon_with_face:
 
 #### Future features
  - [ ] Image in flashcard

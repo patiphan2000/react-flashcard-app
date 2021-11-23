@@ -28,15 +28,15 @@ function Flashcard({ flashcard, flip, setFlip }) {
     return (
         <div className={`flashcard ${flip? 'flip':''}`} style={{height: height}}>
             <div className="front" ref={frontEl}>
-                <Card sx={{ backgroundColor: '#fff8e7' }}>
+                <Card sx={{ backgroundColor: '#fff8e7' }} onClick={()=>{setFlip(!flip)}}>
                     <CardContent>
-                        <Typography className="text" variant="h5">{flashcard.front.text}</Typography>
+                        <Typography className="text" variant="h5" sx={{ color: 'black' }}>{flashcard.front.text}</Typography>
                     </CardContent>
                     <CardContent>
-                        <Typography className="subText" variant="subtitle2">{flashcard.front.subText}</Typography>
+                        <Typography className="subText" variant="subtitle2" sx={{ color: '#656565' }}>{flashcard.front.subText}</Typography>
                     </CardContent>
                     <CardActions style={{justifyContent: 'center'}}>
-                        <IconButton aria-label="autorenewIcon" size="large"
+                        <IconButton aria-label="autorenewIcon" size="large" sx={{ color: '#656565' }}
                         onClick={()=>{setFlip(!flip)}}>
                             <AutorenewIcon fontSize="inherit" />
                         </IconButton>
@@ -44,15 +44,15 @@ function Flashcard({ flashcard, flip, setFlip }) {
                 </Card>
                 </div>
             <div className="back" ref={backEl}>
-                <Card sx={{ backgroundColor: '#fff8e7' }}>
+                <Card sx={{ backgroundColor: '#fff8e7' }} onClick={()=>{setFlip(!flip)}}>
                     <CardContent>
-                        <Typography className="text" variant="h5">{flashcard.back.text}</Typography>
+                        <Typography className="text" variant="h5" sx={{ color: 'black' }}>{flashcard.back.text}</Typography>
                     </CardContent>
                     <CardContent>
-                        <Typography className="subText" variant="subtitle2">{flashcard.back.subText}</Typography>
+                        <Typography className="subText" variant="subtitle2" sx={{ color: '#656565' }}>{flashcard.back.subText}</Typography>
                     </CardContent>
                     <CardActions style={{justifyContent: 'center'}}>
-                        <IconButton aria-label="autorenewIcon" size="large"
+                        <IconButton aria-label="autorenewIcon" size="large" sx={{ color: '#656565' }}
                         onClick={()=>{setFlip(!flip)}}>
                             <AutorenewIcon fontSize="inherit" />
                         </IconButton>
