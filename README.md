@@ -18,7 +18,7 @@ flashcard app with 5 basic features.
  - delete category(also delete all of the flashcards in the category)
 
 ## Usage
-You can try an application at [flashcard app](https://patiphan2000-flashcard-app.herokuapp.com/) then login with the *test user*
+You can try an application at [flashcard app](https://react-flashcard-app-six.vercel.app) then login with the *test user*
 
 Email:
 ```
