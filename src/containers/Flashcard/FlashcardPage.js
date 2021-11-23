@@ -44,11 +44,7 @@ function FlashcardPage () {
             if (categorys[fc].name === categoryName) {
                 // console.log(categorys[fc].flashcards);
                 if (!categorys[fc].flashcards) {
-                    setFlashcardList([{
-                        front: { text: 'No card here', subText: '' },
-                        back: { text: 'No card here', subText: '' },
-                    }])
-                    indexNum = 1
+                    navigate('/category/' + 'no flashcard in ' + categoryName)
                     return;
                 }
                 setFlashcardList(categorys[fc].flashcards)
@@ -63,7 +59,7 @@ function FlashcardPage () {
             return;
         }
         fetchData()
-      }, []);
+      });
 
     return (
         <Grid
@@ -106,8 +102,8 @@ function FlashcardPage () {
                         next
                     </Button>
                 </Grid>
-                <Grid item xs={12}>
-                    <AddButton/>
+                <Grid item xs={12} sx={{ marginTop: 5 }}>
+                    <AddButton clickHandler={()=>{ navigate("/manage") }} />
                 </Grid>
             </Grid>
         </Grid>
