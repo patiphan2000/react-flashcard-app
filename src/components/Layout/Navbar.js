@@ -89,8 +89,9 @@ function Navbar({ authState, setAuthState }) {
             <Typography 
             align="left"
             variant="h4" 
-            component="div" 
-            sx={{ flexGrow: 1 }}>
+            component="div"
+            onClick={()=>{ navigate("/") }}
+            sx={{ flexGrow: 1, cursor: 'pointer' }}>
               FlashCard
             </Typography>
             {
