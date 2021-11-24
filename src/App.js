@@ -78,7 +78,7 @@ function App () {
           <Navbar authState={authState} setAuthState={setAuthState} currentTheme={useLightTheme} setTheme={setUseLightTheme}/>
         </Grid>
 
-        <Container sx={{ minHeight: "100vh" }}>
+        <Container sx={{ minHeight: {xs: "100vh", sm: "82vh"} }}>
           <Grid
             container
             spacing={0}
