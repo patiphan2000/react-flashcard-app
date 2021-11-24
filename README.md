@@ -6,9 +6,9 @@
 I personally created this application to help me learn French and also let me practice and learn about *React*.
 
 ## Release note
-> version `0.2.1`    
+> version `0.3.0`    
 
-improve some UI for overall look
+add default image for category in case of error
 
 ## Features
  - create category with cover image
