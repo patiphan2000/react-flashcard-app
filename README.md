@@ -6,9 +6,9 @@
 I personally created this application to help me learn French and also let me practice and learn about *React*.
 
 ## Release note
-> version `0.2.1`    
+> version `0.3.0`    
 
-improve some UI for overall look
+add default image for category in case of error
 
 ## Features
  - create category with cover image
@@ -33,7 +33,7 @@ Password:
 **NOTE**
 
  - The number of categories and flashcards per category for test user is limited to maximum at 4 categories and 10 flashcards per category.
- - The image searching API is limited, you might get an error if you create a new category too frequently.
+ - The image searching API is limited, you might encounter some difficulty if you create new category too frequently.
 
 ---
 
