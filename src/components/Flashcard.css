@@ -28,3 +28,16 @@
 .flashcard .back {
     transform: rotateY(180deg);
 }
+
+.circle {
+    position: absolute;
+    transform: translateX(-50%) scale(1);
+    border-radius: 50%;
+    position: absolute;
+    z-index: -1;
+    transition: 300ms ease;
+}
+
+.circle.flip {
+    transform: translateX(-50%) scale(0);
+}
