@@ -154,8 +154,10 @@ export default function FlashcardTable({flashcards, handleDelete}) {
               {stableSort(rows, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
-                  const isItemSelected = isSelected(index);
-                  const labelId = `enhanced-table-checkbox-${index}`;
+                  let i = index;
+                  if (page > 0) { i += (5 * page) }
+                  const isItemSelected = isSelected(i);
+                  const labelId = `enhanced-table-checkbox-${i}`;
 
                   return (
                     <TableRow
@@ -164,7 +166,7 @@ export default function FlashcardTable({flashcards, handleDelete}) {
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
-                      key={index}
+                      key={i}
                       selected={isItemSelected}
                     >
                       <TableCell padding="checkbox">
@@ -196,7 +198,7 @@ export default function FlashcardTable({flashcards, handleDelete}) {
           </Table>
         </TableContainer>
         <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
+          rowsPerPageOptions={[5]}
           component="div"
           count={rows.length}
           rowsPerPage={rowsPerPage}
