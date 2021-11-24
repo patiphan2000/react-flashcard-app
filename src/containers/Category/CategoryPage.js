@@ -25,17 +25,19 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 function CategoryPage ({}) {
 
     const { message } = useParams()
-
+    
     const navigate = useNavigate();
 
     const [categorys, setCategorys] = useState([]);
     const [openSnackbar, setOpenSnackbar] = useState(false)
+    const [errMessage, setErrMessage] = useState(message)
 
     const handleClose = (event, reason) => {
         if (reason === 'clickaway') {
             return;
         }
         setOpenSnackbar(false);
+        setErrMessage(null);
     };
 
     const fetchData = async () => {
@@ -49,10 +51,10 @@ function CategoryPage ({}) {
 
     useEffect(() => {
         fetchData()
-        if (message != null) {
+        if (errMessage != null) {
             setOpenSnackbar(true)
         }
-    }, [fetchData, message]);
+    }, [fetchData, errMessage]);
 
     return (
         <Grid 
@@ -92,7 +94,7 @@ function CategoryPage ({}) {
             </Grid>
             <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleClose}>
                 <Alert severity="error" onClose={handleClose} sx={{ width: '100%' }}>
-                    {message}
+                    {errMessage}
                 </Alert>
             </Snackbar>
             
