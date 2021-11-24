@@ -12,6 +12,7 @@ import FlashcardPage from './containers/Flashcard/FlashcardPage';
 import CategoryPage from './containers/Category/CategoryPage';
 import Navbar from './components/Layout/Navbar'
 import ManagePage from './containers/Manage/ManagePage'
+import Footer from './components/Layout/Footer';
 import './App.css'
 
 import Container from '@mui/material/Container';
@@ -73,15 +74,16 @@ function App () {
       <CssBaseline />
       <Router>
 
-        <Navbar authState={authState} setAuthState={setAuthState} currentTheme={useLightTheme} setTheme={setUseLightTheme}/>
-        
-        <Container>
+        <Grid sx={{ height: '10vh' }}>
+          <Navbar authState={authState} setAuthState={setAuthState} currentTheme={useLightTheme} setTheme={setUseLightTheme}/>
+        </Grid>
+
+        <Container sx={{ minHeight: "100vh" }}>
           <Grid
             container
             spacing={0}
             direction="column"
             alignItems="center"
-            style={{ minHeight: '100vh' }}
           >
             <Routes>
               <Route path="/" element={ 
@@ -110,6 +112,7 @@ function App () {
             </Routes>
           </Grid> 
         </Container>
+        <Footer/>
       </Router>
       </ThemeProvider>
     </div>
