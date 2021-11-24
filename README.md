@@ -6,9 +6,9 @@
 I personally created this application to help me learn French and also let me practice and learn about *React*.
 
 ## Release note
-> version `0.2.0`    
+> version `0.2.1`    
 
-implement theme toggle feature for user to be able to use light or dark theme
+improve some UI for overall look
 
 ## Features
  - create category with cover image
