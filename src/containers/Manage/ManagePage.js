@@ -112,6 +112,7 @@ function ManagePage (){
                     flashcards has been deleted!
                 </Alert>
             )
+            setLoading(true)
         }
         else {
             setAlertBar(
@@ -121,7 +122,6 @@ function ManagePage (){
             )
         }
         setOpenSnackbar(true)
-        setTrigger(!trigger)
     }
 
     const deleteCategoryFromDB = async () => {
@@ -133,33 +133,33 @@ function ManagePage (){
         return result;
     }
 
-    useEffect(() => {
-
-        const fetchData = async () => {
-            if (auth.currentUser != null) {
-                const cc = await getCategory(auth.currentUser.email);
-                setCategorys(cc)
-                if (selectedCategory === "") {
-                    setFlashcardList([])
-                    // setLoading(false);
-                    return;
-                }
-                else {
-                    for (var fc in categorys) {
-                        if (categorys[fc].name === selectedCategory) {
-                            if (!categorys[fc].flashcards) {
-                                setFlashcardList([])
-                                return;
-                            }
-                            setFlashcardList(categorys[fc].flashcards)
-                            // setLoading(false);
+    const fetchData = async () => {
+        if (auth.currentUser != null) {
+            const cc = await getCategory(auth.currentUser.email);
+            setCategorys(cc)
+            if (selectedCategory === "") {
+                setFlashcardList([])
+                // setLoading(false);
+                return;
+            }
+            else {
+                for (var fc in categorys) {
+                    if (categorys[fc].name === selectedCategory) {
+                        if (!categorys[fc].flashcards) {
+                            setFlashcardList([])
                             return;
                         }
+                        setFlashcardList(categorys[fc].flashcards)
+                        // setLoading(false);
+                        return;
                     }
                 }
             }
         }
+    }
 
+    useEffect(() => {
+        
         if (auth.currentUser == null) {
             navigate('/login')
             return;
