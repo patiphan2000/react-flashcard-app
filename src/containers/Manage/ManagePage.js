@@ -121,6 +121,7 @@ function ManagePage (){
             )
         }
         setOpenSnackbar(true)
+        setTrigger(!trigger)
     }
 
     const deleteCategoryFromDB = async () => {
