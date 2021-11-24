@@ -238,6 +238,7 @@ function ManagePage (){
                     justifyContent="center"
                     sx={{ marginTop: "50px", marginBottom: "50px" }}>
                         <AddFlashcardForm category={selectedCategory}/>
+                        <Button color="error" sx={{ marginTop: 2 }} onClick={()=>{setAddCardDrawer(false)}}>Cancel</Button>
                     </Grid>
                 </SwipeableDrawer>
 
@@ -254,6 +255,7 @@ function ManagePage (){
                     justifyContent="center"
                     sx={{ marginTop: "50px", marginBottom: "50px" }}>
                         <AddCategoryForm/>
+                        <Button color="error" sx={{ marginTop: 2 }} onClick={()=>{setAddCategoryDrawer(false)}}>Cancel</Button>
                     </Grid>
                 </SwipeableDrawer>
 

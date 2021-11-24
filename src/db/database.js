@@ -164,8 +164,57 @@ export async function getPhoto(keyword) {
     const url = "https://api.unsplash.com/search/photos?page=1&per_page=6&query="
     const client = "&client_id=" + process.env.REACT_APP_UNPLASH_APP_ACCESS_KEY
     var photos;
-    await axios.get(url + keyword + client).then(response => {
-        photos = response.data.results  
-    })
-    return photos
+    try {
+        await axios.get(url + keyword + client).then(response => {
+            photos = response.data.results  
+        })
+        return photos
+    }
+    catch(err) {
+        return [
+            {
+                id: "1",
+                urls: {
+                    regular: "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/dog-puppy-on-garden-royalty-free-image-1586966191.jpg?crop=1.00xw:0.669xh;0,0.190xh&resize=1200:*"
+                },
+                alt_describtion: "rick roll"
+            },
+            {
+                id: "2",
+                urls: {
+                    regular: "https://images.immediate.co.uk/production/volatile/sites/4/2020/08/GettyImages_591540453-c-159fa30.jpg?quality=90&resize=940%2C400"
+                },
+                alt_describtion: "hackerman meme"
+            },
+            {
+                id: "3",
+                urls: {
+                    regular: "https://st1.latestly.com/wp-content/uploads/2021/08/31-6-784x441.jpg"
+                },
+                alt_describtion: "cute cat"
+            },
+            {
+                id: "4",
+                urls: {
+                    regular: "https://obs.line-scdn.net/0hOlfcmfRvEENbGjhuYQFvFGNMEyxodgNAPyxBQAd0TnciLwcXYXkNdnceHiRwL1cdNS9bITsbHXpxLgMXNQ/w644"
+                },
+                alt_describtion: "cute cat"
+            },
+            {
+                id: "5",
+                urls: {
+                    regular: "https://i.kym-cdn.com/entries/icons/original/000/021/807/ig9OoyenpxqdCQyABmOQBZDI0duHk2QZZmWg2Hxd4ro.jpg"
+                },
+                alt_describtion: "cute cat"
+            },
+            {
+                id: "6",
+                urls: {
+                    regular: "https://i.insider.com/619cd5edd2fd620018209b5a?width=700"
+                },
+                alt_describtion: "cute cat"
+            },
+
+        ]
+    }
 }
