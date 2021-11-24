@@ -161,7 +161,7 @@ export async function deleteCategory(categoryInfo) {
 }
 
 export async function getPhoto(keyword) {
-    const url = "https://api.unsplash.com/search/photos?page=1&per_page=6&query="
+    const url = "https://api.unsplash.com/search/photos?page=1&per_page=9&query="
     const client = "&client_id=" + process.env.REACT_APP_UNPLASH_APP_ACCESS_KEY
     var photos;
     try {
