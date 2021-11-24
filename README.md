@@ -33,7 +33,7 @@ Password:
 **NOTE**
 
  - The number of categories and flashcards per category for test user is limited to maximum at 4 categories and 10 flashcards per category.
- - The image searching API is limited, you might get an error if you create a new category too frequently.
+ - The image searching API is limited, you might encounter some difficulty if you create new category too frequently.
 
 ---
 
