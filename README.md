@@ -6,9 +6,10 @@
 I personally created this application to help me learn French and also let me practice and learn about *React*.
 
 ## Release note
-> version `0.3.0`    
+> version `0.3.1`    
 
-add default image for category in case of error
+ - add polka dot to indicate flashcard side
+ - fixed appbar position
 
 ## Features
  - create category with cover image
