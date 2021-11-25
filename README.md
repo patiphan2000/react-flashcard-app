@@ -1,9 +1,4 @@
 # Flashcards App
-[![PyPi license](https://badgen.net/pypi/license/pip/)](https://pypi.com/project/pip/)
-[![GitHub issues](https://img.shields.io/github/issues/Naereen/StrapDown.js.svg)](https://github.com/patiphan2000/react-flashcard-app/issues/)
-[![Demandez moi n'importe quoi !](https://img.shields.io/badge/Demandez%20moi-n'%20importe%20quoi-1abc9c.svg)](https://GitHub.com/Naereen/ama.fr)
-
-
 ## Overview
 *flashcard app* that allows users to create flashcards in separated categories with a manage page for add or delete any flashcards or category. 
 
