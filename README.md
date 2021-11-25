@@ -4,6 +4,8 @@
 
 I personally created this application to help me learn French and also let me practice and learn about *React*.
 
+![Alt Text](https://media.giphy.com/media/vFKqnCdLPNOKc/giphy.gif)
+
 ## Release note
 > version `1.0.0`    
 
