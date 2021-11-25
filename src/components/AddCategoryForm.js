@@ -77,7 +77,7 @@ function AddCategoryForm() {
     };  
 
     const handleSelectPhoto = (url) => {
-        console.log(url);
+        // console.log(url);
         setNewCoverPhoto(url)
     }
 
