@@ -125,17 +125,17 @@ function ManagePage (){
         setOpenSnackbar(true)
     }
 
-    const deleteCategoryFromDB = async () => {
+    const deleteCategoryFromDB = () => {
         const email = auth.currentUser.email
-        const result = await deleteCategory({
+        const result = deleteCategory({
             user: email,
             category: selectedCategory
         })
         return result;
     }
 
-    const fetchData = async () => {
-        const cc = await getCategory(auth.currentUser.email);
+    const fetchData = () => {
+        const cc = getCategory(auth.currentUser.email);
         setCategorys(cc)
         if (selectedCategory === "") {
             setFlashcardList([])
@@ -220,6 +220,7 @@ function ManagePage (){
                     <AddButton clickHandler={toggleAddCardDrawer(true)}/>
                 </Grid>
                 : ""}
+                {/* <Button onClick={fixNewData}>fix</Button> */}
 
                 <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleClose}>
                     {alertBar}

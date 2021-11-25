@@ -1,26 +1,33 @@
 import axios from 'axios'
+import { app } from '../firebase'
+import { getDatabase, ref, onValue, set } from "firebase/database";
 
 
-const request = axios.create({ baseURL: process.env.REACT_APP_DATABASE_END_POINT })
+const request = axios.create({ baseURL: process.env.REACT_APP_DATABASE_END_POINT });
+const db = getDatabase(app);
 
-export async function getCategory(userEmail) {
-    const response = await request.get('/flashcard.json')
-    const data = response.data
-    const users = data.users
-    var category;
-    for (var user in users) {
-        const email = users[user].email;
-        if (email === userEmail){
-            category = users[user].category;
-            return category
+export function getCategory(userEmail) {
+    const starCountRef = ref(db, '/flashcard/users');
+    let category = [];
+    onValue(starCountRef, (snapshot) => {
+        const data = snapshot.val();
+        for (let user in data) {
+            if (data[user].email === userEmail) {
+                category = data[user].category;
+            }
         }
-    }
-    return []
+    });
+    
+    return category
 }
 
-export async function addNewCard(newcardInfo) {
-    const response = await request.get('/flashcard.json')
-    const data = response.data
+export function addNewCard(newcardInfo) {
+    const starCountRef = ref(db, '/flashcard');
+    let data;
+    onValue(starCountRef, (snapshot) => {
+        data = snapshot.val();
+    });
+
     for (var user in data.users) {
         const userEmail = data.users[user].email;
         if (userEmail === newcardInfo.user){
@@ -43,10 +50,15 @@ export async function addNewCard(newcardInfo) {
                         users: data.users
                     }
                     try {
-                        await request.patch('/flashcard.json', newData).then(response => {
-                            // console.log(response);
-                            return true;
-                        })
+                        set(ref(db, '/flashcard'), newData)
+                          .then(() => {
+                            // Data saved successfully!
+                            return true
+                          })
+                          .catch((error) => {
+                            // The write failed...
+                            return false
+                          });
                     } catch (error) {
                         return false
                     }
@@ -67,8 +79,13 @@ export async function deleteCard(newcardInfoList) {
         return false
     }
 
-    const response = await request.get('/flashcard.json')
-    const data = response.data
+    const starCountRef = ref(db, '/flashcard');
+    let data;
+    onValue(starCountRef, (snapshot) => {
+        data = snapshot.val();
+    });
+
+    let result = false;
     for (var user in data.users) {
         if (data.users[user].email === newcardInfoList.user){
             for (var cat in data.users[user].category) {
@@ -77,32 +94,35 @@ export async function deleteCard(newcardInfoList) {
 
                     const filterList = data.users[user].category[cat].flashcards.filter(
                         ele => !checkInclude(ele))
-
-                    // console.log(filterList);
                     
                     data.users[user].category[cat].flashcards = filterList
 
                     const newData = {
                         users: data.users
                     }
-                    try {
-                        await request.patch('/flashcard.json', newData).then(response => {
-                            return true;
-                        })
-                        return true;
-                    } catch (error) {
-                        return false
-                    }
+                    await set(ref(db, '/flashcard'), newData)
+                    .then(() => {
+                        // Data saved successfully!
+                        result = true;
+                    })
+                    .catch((error) => {
+                        // The write failed...
+                        console.log(error);
+                    });
                 }
             }
         }
     }
-    return false;
+    return result;
 }
 
-export async function addNewCategory(categoryInfo) {
-    const response = await request.get('/flashcard.json')
-    const data = response.data
+export function addNewCategory(categoryInfo) {
+    const starCountRef = ref(db, '/flashcard');
+    let data;
+    onValue(starCountRef, (snapshot) => {
+        data = snapshot.val();
+    });
+
     for (var user in data.users) {
         if (data.users[user].email === categoryInfo.user){
 
@@ -121,10 +141,15 @@ export async function addNewCategory(categoryInfo) {
                 users: data.users
             }
             try {
-                await request.patch('/flashcard.json', newData).then(response => {
-                    console.log(response);
-                    return true;
+                set(ref(db, '/flashcard'), newData)
+                .then(() => {
+                    // Data saved successfully!
+                    return true
                 })
+                .catch((error) => {
+                    // The write failed...
+                    return false
+                });
             } catch (error) {
                 return false
             }
@@ -133,9 +158,13 @@ export async function addNewCategory(categoryInfo) {
     return false
 }
 
-export async function deleteCategory(categoryInfo) {
-    const response = await request.get('/flashcard.json')
-    const data = response.data
+export function deleteCategory(categoryInfo) {
+    const starCountRef = ref(db, '/flashcard');
+    let data;
+    onValue(starCountRef, (snapshot) => {
+        data = snapshot.val();
+    });
+
     for (var user in data.users) {
         if (data.users[user].email === categoryInfo.user) {
             for (var cat in data.users[user].category) {
@@ -145,10 +174,15 @@ export async function deleteCategory(categoryInfo) {
                         users: data.users
                     }
                     try {
-                        await request.patch('/flashcard.json', newData).then(response => {
-                            console.log(response);
-                            return true;
+                        set(ref(db, '/flashcard'), newData)
+                        .then(() => {
+                            // Data saved successfully!
+                            return true
                         })
+                        .catch((error) => {
+                            // The write failed...
+                            return false
+                        });
                     } catch (error) {
                         return false
                     }
@@ -218,3 +252,4 @@ export async function getPhoto(keyword) {
         ]
     }
 }
+
