@@ -49,7 +49,6 @@ function ManagePage (){
     const [openDialog, setOpenDialog] = useState(false)
     const [alertBar, setAlertBar] = useState()
     const [loading, setLoading] = useState(false)
-    const [trigger, setTrigger] = useState(true)
 
     const toggleAddCardDrawer = (open) => (event) => {
         if (
@@ -60,6 +59,9 @@ function ManagePage (){
           return;
         }
         setAddCardDrawer(open);
+        if (!open) {
+            setLoading(true);
+        }
     };
 
     const toggleAddCategoryDrawer = (open) => (event) => {
@@ -71,7 +73,6 @@ function ManagePage (){
           return;
         }
         setAddCategoryDrawer(open);
-        setTrigger(!trigger)
     };
 
     const handleClose = (event, reason) => {
@@ -134,25 +135,23 @@ function ManagePage (){
     }
 
     const fetchData = async () => {
-        if (auth.currentUser != null) {
-            const cc = await getCategory(auth.currentUser.email);
-            setCategorys(cc)
-            if (selectedCategory === "") {
-                setFlashcardList([])
-                // setLoading(false);
-                return;
-            }
-            else {
-                for (var fc in categorys) {
-                    if (categorys[fc].name === selectedCategory) {
-                        if (!categorys[fc].flashcards) {
-                            setFlashcardList([])
-                            return;
-                        }
-                        setFlashcardList(categorys[fc].flashcards)
-                        // setLoading(false);
+        const cc = await getCategory(auth.currentUser.email);
+        setCategorys(cc)
+        if (selectedCategory === "") {
+            setFlashcardList([])
+            // setLoading(false);
+            return;
+        }
+        else {
+            for (var fc in categorys) {
+                if (categorys[fc].name === selectedCategory) {
+                    if (!categorys[fc].flashcards) {
+                        setFlashcardList([])
                         return;
                     }
+                    setFlashcardList(categorys[fc].flashcards)
+                    // setLoading(false);
+                    return;
                 }
             }
         }
@@ -166,7 +165,7 @@ function ManagePage (){
         }
 
         fetchData()
-    }, [selectedCategory, trigger]);
+    }, [selectedCategory, loading]);
 
     useEffect(() => {
         setLoading(false);
@@ -239,7 +238,10 @@ function ManagePage (){
                     justifyContent="center"
                     sx={{ marginTop: "50px", marginBottom: "50px" }}>
                         <AddFlashcardForm category={selectedCategory}/>
-                        <Button color="error" sx={{ marginTop: 2 }} onClick={()=>{setAddCardDrawer(false)}}>Cancel</Button>
+                        <Button color="error" sx={{ marginTop: 2 }} onClick={()=>{
+                            setAddCardDrawer(false);
+                            setLoading(true);
+                            }}>Cancel</Button>
                     </Grid>
                 </SwipeableDrawer>
 
