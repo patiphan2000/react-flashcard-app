@@ -7,7 +7,7 @@ I personally created this application to help me learn French and also let me pr
 ![Alt Text](https://github.com/patiphan2000/react-flashcard-app/blob/develop/public/flashcard-app-GIF.gif)
 
 ## Release note :rocket:
-> version `1.0.0`
+> version `1.1.0`
 
 
 ## Features
