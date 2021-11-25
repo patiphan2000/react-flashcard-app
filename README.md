@@ -1,3 +1,4 @@
+[![GitHub issues](https://img.shields.io/github/issues/Naereen/StrapDown.js.svg)](https://github.com/patiphan2000/react-flashcard-app/issues)
 # Flashcards App
 
 ## Overview
@@ -6,10 +7,8 @@
 I personally created this application to help me learn French and also let me practice and learn about *React*.
 
 ## Release note
-> version `0.3.1`    
+> version `1.0.0`    
 
- - add polka dot to indicate flashcard side
- - fixed appbar position
 
 ## Features
  - create category with cover image
@@ -43,8 +42,15 @@ Password:
 #### Task
  - [x] Make menu bar work
  - [x] Dark theme :last_quarter_moon_with_face:
- - [ ] Make a UI to indicate which side of flashcards are currently displayed
+ - [x] Make a UI to indicate which side of flashcards are currently displayed
 
 #### Future features
  - [ ] Image in flashcard
  - [ ] Edit flashcard and category
+
+---
+## Tools 
+![Yarn](https://img.shields.io/badge/yarn-%232C8EBB.svg?style=for-the-badge&logo=yarn&logoColor=white)
+![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
+![Firebase](https://img.shields.io/badge/firebase-%23039BE5.svg?style=for-the-badge&logo=firebase)
+![MUI](https://img.shields.io/badge/MUI-%230081CB.svg?style=for-the-badge&logo=material-ui&logoColor=white)
