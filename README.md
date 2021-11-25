@@ -1,4 +1,4 @@
-# Flashcards App
+# Flashcards App:zap:
 ## Overview
 *flashcard app* that allows users to create flashcards in separated categories with a manage page for add or delete any flashcards or category. 
 
@@ -6,8 +6,8 @@ I personally created this application to help me learn French and also let me pr
 
 ![Alt Text](https://github.com/patiphan2000/react-flashcard-app/blob/develop/public/flashcard-app-GIF.gif)
 
-## Release note
-> version `1.0.0`    
+## Release note :rocket:
+> version `1.0.0`
 
 
 ## Features
@@ -45,8 +45,8 @@ Password:
  - [x] Make a UI to indicate which side of flashcards are currently displayed
 
 #### Future features
- - [ ] Image in flashcard
- - [ ] Edit flashcard and category
+ - [ ] Image in flashcard :construction:
+ - [ ] Edit flashcard and category :construction:
 
 ---
 ## Tools 
