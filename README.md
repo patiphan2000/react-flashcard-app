@@ -43,6 +43,7 @@ Password:
  - [x] Make menu bar work
  - [x] Dark theme :last_quarter_moon_with_face:
  - [x] Make a UI to indicate which side of flashcards are currently displayed
+ - [ ] Word filter :rotating_light:
 
 #### Future features
  - [ ] Image in flashcard :construction:
